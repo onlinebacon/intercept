@@ -1,0 +1,35 @@
+body {
+	background-color: #151515;
+	margin: 0px;
+	overflow: hidden;
+	--console-width: 480px;
+}
+div.text,
+div.logs {
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+}
+div.text {
+	background-color: #222;
+	left: 10px;
+	right: calc(var(--console-width) + 20px);
+}
+div.logs {
+	background-color: #0c0c0c;
+	width: var(--console-width);
+	right: 10px;
+}
+textarea {
+	color: #ccc;
+	margin: 0px;
+	border: none;
+	background-color: transparent;
+	resize: none;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+}
+div.logs textarea {
+	color: #5fa;
+}
