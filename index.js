@@ -74,14 +74,14 @@ const finish = (ctx) => {
 	for (let i=0; i<ctx.lops.length; ++i) {
 		const lop = ctx.lops[i];
 		const { type, center } = lop;
-		let dif;
+		let diff;
 		if (type === COP) {
-			dif = (lop.radius - S.haversine(res, center))/DEG;
+			diff = (lop.radius - S.haversine(res, center))/DEG;
 		}
 		if (type === AZM_LOP) {
-			dif = angleDif(lop.azm, S.calcAzimuth(res, center))/DEG;
+			diff = angleDif(lop.azm, S.calcAzimuth(res, center))/DEG;
 		}
-		write('lop ', i + 1, ' dif: ', formatAngle(dif));
+		write('LOP ', i + 1, ' diff: ', formatAngle(diff));
 	}
 };
 
