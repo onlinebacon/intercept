@@ -34,14 +34,61 @@ const angleDif = (target, reference) => {
 	return rawDif;
 };
 
+const formatAngle = (angle) => {
+	return angle.toFixed(6)*1 + '';
+};
+
 const formatCoord = (coord) => {
-	const [ lat, lon ] = coord.map(val => val/DEG);
-	return lat.toFixed(6)*1 + ', ' + lon.toFixed(6)*1;
+	return coord.map(val => formatAngle(val/DEG)).join(', ');
+};
+
+const finish = (ctx) => {
+	const minimizers = icosahedronCoords.map(coord => {
+		const fn = (coord) => {
+			let sum = 0;
+			for (const { center, radius } of ctx.radLOP) {
+				const err = S.haversine(coord, center) - radius;
+				sum += err**2;
+			}
+			for (const { center, azm } of ctx.azmLOP) {
+				const err = angleDif(azm, S.calcAzimuth(coord, center));
+				sum += (err >= D180 ? D360 - err : err)**2;
+			}
+			return sum;
+		};
+		return new SphericalMinimizer({ coord, fn });
+	});
+	for (let i=0; i<1000; ++i) {
+		minimizers.forEach(min => min.iterate());
+	}
+	minimizers.sort((a, b) => a.value - b.value);
+	const res = minimizers[0].coord;
+	write('Result: ', formatCoord(res));
+	if (ctx.cmp != null) {
+		write('Error:');
+		const radians = S.haversine(res, ctx.cmp);
+		const km = radians*6371.0088;
+		write('- Degrees: ', formatAngle(radians/DEG));
+		write('- Distance: ', km.toFixed(3)*1, ' km / ', (km/1.609344).toFixed(3)*1, ' mi');
+	}
+	for (let i=0; i<ctx.lops.length; ++i) {
+		const lop = ctx.lops[i];
+		const { type, center } = lop;
+		let dif;
+		if (type === COP) {
+			dif = (lop.radius - S.haversine(res, center))/DEG;
+		}
+		if (type === AZM_LOP) {
+			dif = angleDif(lop.azm, S.calcAzimuth(res, center))/DEG;
+		}
+		write('lop ', i + 1, ' dif: ', formatAngle(dif));
+	}
 };
 
 const runScript = () => {
 	const ctx = {
 		gp: null,
+		cmp: null,
 		azmLOP: [],
 		radLOP: [],
 		lops: [],
@@ -57,7 +104,7 @@ const runScript = () => {
 		const cmd = commands.find(cmd => cmd.regex.test(line));
 		if (cmd == null) {
 			write(`Line ${i + 1} is invalid`);
-			break;
+			return;
 		}
 		try {
 			cmd.run(ctx, line, i);
@@ -66,9 +113,10 @@ const runScript = () => {
 				throw err;
 			}
 			write(`Error in line ${err.lineIndex + 1}: ${err.message}`);
-			break;
+			return;
 		}
 	}
+	finish(ctx);
 };
 
 commands.push({
@@ -79,7 +127,7 @@ commands.push({
 		if (gp === null) {
 			throw new ScriptError('invalid geographical position', lineIndex);
 		}
-		ctx.gp = gp;
+		ctx.gp = gp.map(val => val*DEG);
 	},
 });
 
@@ -96,7 +144,7 @@ commands.push({
 		}
 		const lop = {
 			type: COP,
-			center: ctx.gp.map(val => val*DEG),
+			center: ctx.gp,
 			radius: rad*DEG,
 		};
 		ctx.radLOP.push(lop);
@@ -117,7 +165,7 @@ commands.push({
 		}
 		const lop = {
 			type: AZM_LOP,
-			center: ctx.gp.map(val => val*DEG),
+			center: ctx.gp,
 			azm: azm*DEG,
 		};
 		ctx.azmLOP.push(lop);
@@ -126,39 +174,14 @@ commands.push({
 });
 
 commands.push({
-	regex: /^\s*min-sqr-err\s*$/i,
+	regex: /^\s*(cmp|compare)\s*:/i,
 	run: function(ctx, line, lineIndex) {
-		const minimizers = icosahedronCoords.map(coord => {
-			const fn = (coord) => {
-				let sum = 0;
-				for (const { center, radius } of ctx.radLOP) {
-					const err = S.haversine(coord, center) - radius;
-					sum += err**2;
-				}
-				for (const { center, azm } of ctx.azmLOP) {
-					const err = angleDif(azm, S.calcAzimuth(coord, center));
-					sum += (err >= D180 ? D360 - err : err)**2;
-				}
-				return sum;
-			};
-			return new SphericalMinimizer({ coord, fn });
-		});
-		for (let i=0; i<1000; ++i) {
-			minimizers.forEach(min => min.iterate());
+		const value = line.replace(this.regex, '').trim();
+		const gp = parseLatLon(value);
+		if (gp === null) {
+			throw new ScriptError('invalid geographical position', lineIndex);
 		}
-		minimizers.sort((a, b) => a.value - b.value);
-		const res = minimizers[0].coord;
-		write('min-sqr-err: ', formatCoord(res));
-		for (let i=0; i<ctx.lops.length; ++i) {
-			const lop = ctx.lops[i];
-			const { type, center } = lop;
-			if (type === COP) {
-				write('  err lop ', i + 1, ': ', (lop.radius - S.haversine(res, center))/DEG);
-			}
-			if (type === AZM_LOP) {
-				write('  err lop ', i + 1, ': ', angleDif(lop.azm, S.calcAzimuth(res, center))/DEG);
-			}
-		}
+		ctx.cmp = gp.map(val => val*DEG);
 	},
 });
 
@@ -167,13 +190,13 @@ input.addEventListener('input', runScript);
 input.value = `
 
 GP: 45°23'15.5"N, 12°30'42.0"W
-Rad: 71° 42' 11"
+Rad: 71° 43' 11"
 
-GP: -30.95464, 63.25619
+GP: -30.95424, 63.25619
 Azm: 183 23 10
 Rad: 45.640278
 
-min-sqr-err
+Compare: 14.6096, 66.0517
 
-`.trim() + '\n';
+`.trim();
 runScript();
