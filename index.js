@@ -83,9 +83,36 @@ const formatCoord = (coord) => {
 	return `${lat}, ${lon}`;
 };
 
+const tableToText = (table) => {
+	const strTable = table.map(row => {
+		return row.map(item => item.toString());
+	});
+	const colLengths = [];
+	strTable.forEach(row => {
+		row.forEach((col, i) => {
+			const { length } = col;
+			if (i >= colLengths.length) {
+				colLengths[i] = length;
+			} else {
+				colLengths[i] = Math.max(colLengths[i], length);
+			}
+		});
+	});
+	const lines = strTable.map((row, rowIndex) => {
+		return row.map((item, i) => {
+			const str = item ?? '';
+			if (rowIndex === 0) {
+				return str.padEnd(colLengths[i], ' ');
+			}
+			return str.padEnd(colLengths[i], ' ');
+		}).join('  ');
+	});
+	return lines.join('\n');
+}
+
 const listLopDifferences = (lops, coord) => {
-	for (let i=0; i<lops.length; ++i) {
-		const lop = lops[i];
+	const headers  = [ '', 'Type', 'Value' ];
+	const rows = lops.map((lop, i) => {
 		const { type, center } = lop;
 		let diff;
 		let typeText;
@@ -97,8 +124,10 @@ const listLopDifferences = (lops, coord) => {
 			typeText = 'azimuth'
 			diff = angleDif(lop.azm, S.calcAzimuth(coord, center))/DEG;
 		}
-		write(` ${i + 1}. (${typeText}) diff: `, formatAngle(diff));
-	}
+		return [ i + 1 + '.', typeText, formatAngle(diff, '-+') ];
+	});
+	const table = [ headers, ...rows ];
+	write(tableToText(table));
 };
 
 const finish = (ctx) => {
