@@ -16,6 +16,13 @@ const write = (...values) => {
 const AZM_LOP = 0x1;
 const COP = 0x2;
 
+const DEG_TYP = 'deg';
+const MIN_TYP = 'min';
+const SEC_TYP = 'sec';
+let angleFormatType = DEG_TYP;
+
+const angleFormatTypes = [ DEG_TYP, MIN_TYP, SEC_TYP ];
+
 class ScriptError extends Error {
 	constructor(message, lineIndex) {
 		super(message);
@@ -34,12 +41,64 @@ const angleDif = (target, reference) => {
 	return rawDif;
 };
 
-const formatAngle = (angle) => {
-	return angle.toFixed(6)*1 + '';
+const formatAngleToDeg = (angle, [ negSign = '-', posSign = '' ] = []) => {
+	const deg = Number(Math.abs(angle).toFixed(6));
+	const sign = angle < 0 ? negSign : posSign;
+	return `${sign}${deg}`;
+};
+
+const formatAngleToMin = (angle, [ negSign = '-', posSign = '' ] = []) => {
+	const totalMin = Number((Math.abs(angle)*60).toFixed(1));
+	const min = Number((totalMin % 60).toFixed(1));
+	const deg = Math.round((totalMin - min)/60);
+	const sign = angle < 0 ? negSign : posSign;
+	return `${sign}${deg}°${min}'`;
+};
+
+const formatAngleToSec = (angle, [ negSign = '-', posSign = '' ] = []) => {
+	const totalSec = Number((Math.abs(angle)*60*60).toFixed(1));
+	const sec = Number((totalSec % 60).toFixed(1));
+	const totalMin = Math.round((totalSec - sec)/60);
+	const min = Math.round(totalMin % 60);
+	const deg = Math.round((totalMin - min)/60);
+	const sign = angle < 0 ? negSign : posSign;
+	return `${sign}${deg}°${min}'${sec}"`;
+};
+
+const formatAngle = (angle, signs) => {
+	switch (angleFormatType) {
+		case DEG_TYP: return formatAngleToDeg(angle, signs);
+		case MIN_TYP: return formatAngleToMin(angle, signs);
+		case SEC_TYP: return formatAngleToSec(angle, signs);
+	}
+	return new Error('Unknown angle format type');
 };
 
 const formatCoord = (coord) => {
-	return coord.map(val => formatAngle(val/DEG)).join(', ');
+	if (angleFormatType === DEG_TYP) {
+		return coord.map(val => formatAngle(val/DEG)).join(', ');
+	}
+	const lat = formatAngle(coord[0], [ 'S ', 'N ' ]);
+	const lon = formatAngle(coord[1], [ 'W ', 'E ' ]);
+	return `${lat}, ${lon}`;
+};
+
+const listLopDifferences = (lops, coord) => {
+	for (let i=0; i<lops.length; ++i) {
+		const lop = lops[i];
+		const { type, center } = lop;
+		let diff;
+		let typeText;
+		if (type === COP) {
+			diff = (lop.radius - S.haversine(coord, center))/DEG;
+			typeText = 'distance'
+		}
+		if (type === AZM_LOP) {
+			typeText = 'azimuth'
+			diff = angleDif(lop.azm, S.calcAzimuth(coord, center))/DEG;
+		}
+		write(` ${i + 1}. (${typeText}) diff: `, formatAngle(diff));
+	}
 };
 
 const finish = (ctx) => {
@@ -71,21 +130,18 @@ const finish = (ctx) => {
 		write('- Degrees: ', formatAngle(radians/DEG));
 		write('- Distance: ', km.toFixed(3)*1, ' km / ', (km/1.609344).toFixed(3)*1, ' mi');
 	}
-	for (let i=0; i<ctx.lops.length; ++i) {
-		const lop = ctx.lops[i];
-		const { type, center } = lop;
-		let diff;
-		if (type === COP) {
-			diff = (lop.radius - S.haversine(res, center))/DEG;
-		}
-		if (type === AZM_LOP) {
-			diff = angleDif(lop.azm, S.calcAzimuth(res, center))/DEG;
-		}
-		write('LOP ', i + 1, ' diff: ', formatAngle(diff));
+	write('');
+	write('Differences - readings vs. result:');
+	listLopDifferences(ctx.lops, res);
+	if (ctx.cmp != null) {
+		write('');
+		write('Reading errors:');
+		listLopDifferences(ctx.lops, ctx.cmp);
 	}
 };
 
 const runScript = () => {
+	angleFormatType = DEG_TYP;
 	const ctx = {
 		gp: null,
 		cmp: null,
@@ -128,6 +184,18 @@ commands.push({
 			throw new ScriptError('invalid geographical position', lineIndex);
 		}
 		ctx.gp = gp.map(val => val*DEG);
+	},
+});
+
+commands.push({
+	regex: /^\s*format\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const type = line.replace(this.regex, '').trim().toLowerCase();
+		if (!angleFormatTypes.includes(type)) {
+			const types = angleFormatTypes.join(', ');
+			throw new ScriptError('unknown angle format. Known formats are: ' + types, lineIndex);
+		}
+		angleFormatType = type;
 	},
 });
 
@@ -197,6 +265,7 @@ Azm: 183 23 10
 Rad: 45.640278
 
 Compare: 14.6096, 66.0517
+Format: sec
 
 `.trim();
 runScript();
