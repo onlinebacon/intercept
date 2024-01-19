@@ -98,7 +98,7 @@ const runScript = () => {
 	output.value = '';
 	for (let i=0; i<lines.length; ++i) {
 		const line = lines[i];
-		if (line.trim() === '') {
+		if (/^\s*#|^\s*$/.test(line)) {
 			continue;
 		}
 		const cmd = commands.find(cmd => cmd.regex.test(line));
