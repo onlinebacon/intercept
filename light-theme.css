@@ -1,0 +1,11 @@
+body {
+	background-color: #ccc;
+}
+.text textarea {
+	background-color: #eee;
+	color: #444;
+}
+.logs textarea {
+	background-color: #fff;
+	color: #000 !important;
+}
