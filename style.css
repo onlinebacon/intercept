@@ -2,7 +2,12 @@ body {
 	background-color: #151515;
 	margin: 0px;
 	overflow: hidden;
-	--console-width: 480px;
+	--console-width: 380px;
+}
+@media only screen and (min-width:1200px) {
+	body {
+		--console-width: 480px;
+	}
 }
 div.text,
 div.logs {
@@ -32,4 +37,7 @@ textarea {
 }
 div.logs textarea {
 	color: #5fa;
+}
+form {
+	margin: 0px;
 }

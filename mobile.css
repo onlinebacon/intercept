@@ -1,0 +1,19 @@
+body {
+	overflow: auto;
+	margin-bottom: 10px;
+}
+div.text, div.logs {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	margin: 10px 10px 0px 10px;
+}
+.text textarea {
+	height: 400px;
+}
+.logs textarea {
+	height: 300px;
+}
+div.logs {
+	width: auto;
+}
