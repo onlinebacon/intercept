@@ -44,7 +44,7 @@ const angleDif = (target, reference) => {
 const formatAngleToDeg = (angle, [ negSign = '-', posSign = '' ] = []) => {
 	const deg = Number(Math.abs(angle).toFixed(6));
 	const sign = angle < 0 ? negSign : posSign;
-	return `${sign}${deg}`;
+	return `${sign}${deg}°`;
 };
 
 const formatAngleToMin = (angle, [ negSign = '-', posSign = '' ] = []) => {
@@ -153,20 +153,18 @@ const finish = (ctx) => {
 	const res = minimizers[0].coord;
 	write('Result: ', formatCoord(res));
 	if (ctx.cmp != null) {
-		write('Error:');
 		const radians = S.haversine(res, ctx.cmp);
 		const km = radians*6371.0088;
-		write('- Degrees: ', formatAngle(radians/DEG));
-		write('- Distance: ', km.toFixed(3)*1, ' km / ', (km/1.609344).toFixed(3)*1, ' mi');
+		write(`Error: ${formatAngle(radians/DEG)} / ${km.toFixed(3)*1} km / ${(km/1.609344).toFixed(3)*1} mi`);
 	}
-	write('');
-	write('Differences - readings vs. result:');
-	listLopDifferences(ctx.lops, res);
 	if (ctx.cmp != null) {
 		write('');
 		write('Reading errors:');
 		listLopDifferences(ctx.lops, ctx.cmp);
 	}
+	write('');
+	write('Reading residuals:');
+	listLopDifferences(ctx.lops, res);
 };
 
 const runScript = () => {
