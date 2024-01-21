@@ -4,6 +4,7 @@ import { parseLatLon } from './lib/js/parse-lat-lon.js';
 import * as S from './lib/js/sphere-math.js';
 import { SphericalMinimizer } from './lib/js/spherical-minimizer.js';
 import { D180, D360, DEG } from './lib/js/trig.js';
+import { tableToText } from './table-to-text.js';
 
 const input = document.querySelector('.text textarea');
 const output = document.querySelector('.logs textarea');
@@ -82,33 +83,6 @@ const formatCoord = (coord) => {
 	const lon = formatAngle(coord[1], [ 'W ', 'E ' ]);
 	return `${lat}, ${lon}`;
 };
-
-const tableToText = (table) => {
-	const strTable = table.map(row => {
-		return row.map(item => item.toString());
-	});
-	const colLengths = [];
-	strTable.forEach(row => {
-		row.forEach((col, i) => {
-			const { length } = col;
-			if (i >= colLengths.length) {
-				colLengths[i] = length;
-			} else {
-				colLengths[i] = Math.max(colLengths[i], length);
-			}
-		});
-	});
-	const lines = strTable.map((row, rowIndex) => {
-		return row.map((item, i) => {
-			const str = item ?? '';
-			if (rowIndex === 0) {
-				return str.padEnd(colLengths[i], ' ');
-			}
-			return str.padEnd(colLengths[i], ' ');
-		}).join('  ');
-	});
-	return lines.join('\n');
-}
 
 const listLopDifferences = (lops, coord) => {
 	const headers  = [ '', 'Type', 'Value' ];
