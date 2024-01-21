@@ -86,9 +86,17 @@ const formatCoord = (coord) => {
 	return `${lat}, ${lon}`;
 };
 
-const listLopDifferences = (lops, coord) => {
+const diffsToStandardDeviation = (diffs) => {
+	let sqrSum = 0;
+	for (let diff of diffs) {
+		sqrSum += diff**2;
+	}
+	return Math.sqrt(sqrSum/diffs.length);
+};
+
+const listLOPDifferences = (lops, coord, showOutliers = false) => {
 	const headers  = [ '', 'Type', 'Value' ];
-	const rows = lops.map((lop, i) => {
+	const array = lops.map((lop) => {
 		const { type, center } = lop;
 		let diff;
 		let typeText;
@@ -100,7 +108,17 @@ const listLopDifferences = (lops, coord) => {
 			typeText = 'azimuth'
 			diff = angleDif(lop.azm, S.calcAzimuth(coord, center))/DEG;
 		}
-		return [ i + 1 + '.', typeText, formatAngle(diff, '-+') ];
+		return { diff, typeText };
+	});
+	const diffs = array.map(item => item.diff);
+	const stdDev = diffsToStandardDeviation(diffs);
+	const rows = array.map((item, i) => {
+		const { diff, typeText } = item;
+		const row = [ i + 1 + '.', typeText, formatAngle(diff, '-+') ];
+		if (showOutliers && Math.abs(diff) > 2*stdDev) {
+			row.push('(outlier)');
+		}
+		return row;
 	});
 	const table = [ headers, ...rows ];
 	write(tableToText(table));
@@ -136,11 +154,11 @@ const finish = (ctx) => {
 	if (ctx.cmp != null) {
 		write('');
 		write('Distance/Azimuth errors:');
-		listLopDifferences(ctx.lops, ctx.cmp);
+		listLOPDifferences(ctx.lops, ctx.cmp);
 	}
 	write('');
 	write('Distance/Azimuth residuals:');
-	listLopDifferences(ctx.lops, res);
+	listLOPDifferences(ctx.lops, res, true);
 };
 
 const runScript = () => {
@@ -337,14 +355,17 @@ input.value = `
 Refraction: Standard
 
 GP: 45°23'15.5"N, 12°30'42.0"W
-Rad: 71° 42' 0"
+Rad: 71° 40' 29"
 
 GP: -30.95424, 63.25619
-Azm: 183 23 10
-Alt: 44.350278
+Azm: 183 21 27
+Alt: 44.360278
 
 GP: 51 55' 15", -10
-Zen: 69 57 23
+Zen: 69 55 20
+
+# This azimuth is an outlier
+# Azm: 321 25 12
 
 Compare: 14.6096, 66.0517
 Format: Sec
