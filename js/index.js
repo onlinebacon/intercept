@@ -156,8 +156,8 @@ const runScript = () => {
 	const lines = text.split('\n');
 	output.value = '';
 	for (let i=0; i<lines.length; ++i) {
-		const line = lines[i];
-		if (/^\s*#|^\s*$/.test(line)) {
+		const line = lines[i].replace(/#.*$/, '');
+		if (line.trim() === '') {
 			continue;
 		}
 		const cmd = commands.find(cmd => cmd.regex.test(line));
