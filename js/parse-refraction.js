@@ -87,6 +87,7 @@ export const parseRefractionMultiplier = (s) => {
 			temperature = temperatureUnit.toC(Number(num));
 			continue;
 		}
+		return null;
 	}
 	return calcMultiplier(pressure, temperature);
 };
