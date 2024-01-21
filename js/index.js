@@ -1,9 +1,11 @@
+import { calcAltStdRefraction } from './calc-alt-refraction.js';
 import { icosahedronCoords } from './lib/js/icosahedron-coords.js';
 import { parseDegree } from './lib/js/parse-degree.js';
 import { parseLatLon } from './lib/js/parse-lat-lon.js';
 import * as S from './lib/js/sphere-math.js';
 import { SphericalMinimizer } from './lib/js/spherical-minimizer.js';
 import { D180, D360, DEG } from './lib/js/trig.js';
+import { parseRefractionMultiplier } from './parse-refraction.js';
 import { tableToText } from './table-to-text.js';
 
 const input = document.querySelector('.text textarea');
@@ -133,11 +135,11 @@ const finish = (ctx) => {
 	}
 	if (ctx.cmp != null) {
 		write('');
-		write('Reading errors:');
+		write('Distance/Azimuth errors:');
 		listLopDifferences(ctx.lops, ctx.cmp);
 	}
 	write('');
-	write('Reading residuals:');
+	write('Distance/Azimuth residuals:');
 	listLopDifferences(ctx.lops, res);
 };
 
@@ -201,7 +203,27 @@ commands.push({
 });
 
 commands.push({
-	regex: /^\s*(rad(ius)?|zen(ith)?|zn|co-?alt(itude)?)\s*:/i,
+	regex: /^\s*ref(raction)?\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const str = line.replace(/^\s*\w+\s*:/, '').trim();
+		if (/^none$/i.test(str)) {
+			ctx.refMul = null;
+			return;
+		}
+		if (/^(std|standard)$/i.test(str)) {
+			ctx.refMul = 1;
+			return;
+		}
+		const refMul = parseRefractionMultiplier(str);
+		if (refMul === null) {
+			throw new ScriptError('invalid value for refraction', lineIndex);
+		}
+		ctx.refMul = refMul;
+	},
+});
+
+commands.push({
+	regex: /^\s*rad(ius)?\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
 		const rad = parseDegree(value);
@@ -211,6 +233,60 @@ commands.push({
 		if (ctx.gp === null) {
 			throw new ScriptError('no geographical position given', lineIndex);
 		}
+		const lop = {
+			type: COP,
+			center: ctx.gp,
+			radius: rad*DEG,
+		};
+		ctx.radLOP.push(lop);
+		ctx.lops.push(lop);
+	},
+});
+
+commands.push({
+	regex: /^\s*(zen(ith)?|zn|co-?alt)\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const value = line.replace(this.regex, '').trim();
+		let zen = parseDegree(value);
+		if (isNaN(zen)) {
+			throw new ScriptError('invalid angle', lineIndex);
+		}
+		if (ctx.gp === null) {
+			throw new ScriptError('no geographical position given', lineIndex);
+		}
+		if (ctx.refMul != null) {
+			const apAlt = 90 - zen;
+			const ref = calcAltStdRefraction(apAlt)*ctx.refMul;
+			const alt = apAlt - ref;
+			zen = 90 - alt;
+		}
+		const rad = zen;
+		const lop = {
+			type: COP,
+			center: ctx.gp,
+			radius: rad*DEG,
+		};
+		ctx.radLOP.push(lop);
+		ctx.lops.push(lop);
+	},
+});
+
+commands.push({
+	regex: /^\s*(alt(itude)?|elevation)\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const value = line.replace(this.regex, '').trim();
+		let alt = parseDegree(value);
+		if (isNaN(alt)) {
+			throw new ScriptError('invalid angle', lineIndex);
+		}
+		if (ctx.gp === null) {
+			throw new ScriptError('no geographical position given', lineIndex);
+		}
+		if (ctx.refMul != null) {
+			const ref = calcAltStdRefraction(alt)*ctx.refMul;
+			alt -= ref;
+		}
+		const rad = 90 - alt;
 		const lop = {
 			type: COP,
 			center: ctx.gp,
@@ -258,15 +334,20 @@ input.focus();
 input.addEventListener('input', runScript);
 input.value = `
 
+Refraction: Standard
+
 GP: 45°23'15.5"N, 12°30'42.0"W
-Rad: 71° 43' 11"
+Rad: 71° 42' 0"
 
 GP: -30.95424, 63.25619
 Azm: 183 23 10
-Rad: 45.640278
+Alt: 44.350278
+
+GP: 51 55' 15", -10
+Zen: 69 57 23
 
 Compare: 14.6096, 66.0517
-Format: sec
+Format: Sec
 
 `.trim();
 runScript();
