@@ -1,6 +1,6 @@
 const pressureUnits = [{
 	regex: /^inHg$/i,
-	toMb: (x) => x*3.38638867,
+	toMb: (x) => x*33.8638867,
 }, {
 	regex: /^Psi$/i,
 	toMb: (x) => x*68.9476,
