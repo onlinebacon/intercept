@@ -1,10 +1,12 @@
 import { calcAltStdRefraction } from './calc-alt-refraction.js';
+import { calcDip } from './calc-dip.js';
 import { icosahedronCoords } from './lib/js/icosahedron-coords.js';
 import { parseDegree } from './lib/js/parse-degree.js';
 import { parseLatLon } from './lib/js/parse-lat-lon.js';
 import * as S from './lib/js/sphere-math.js';
 import { SphericalMinimizer } from './lib/js/spherical-minimizer.js';
 import { D180, D360, DEG } from './lib/js/trig.js';
+import { parseHeight } from './parse-height.js';
 import { parseRefractionMultiplier } from './parse-refraction.js';
 import { tableToText } from './table-to-text.js';
 
@@ -262,6 +264,18 @@ commands.push({
 });
 
 commands.push({
+	regex: /^\s*height\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const value = line.replace(this.regex, '').trim();
+		const h = parseHeight(value);
+		if (isNaN(h)) {
+			throw new ScriptError('invalid height', lineIndex);
+		}
+		ctx.height = h;
+	},
+});
+
+commands.push({
 	regex: /^\s*(zen(ith)?|zn|co-?alt)\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
@@ -299,6 +313,37 @@ commands.push({
 		}
 		if (ctx.gp === null) {
 			throw new ScriptError('no geographical position given', lineIndex);
+		}
+		if (ctx.refMul != null) {
+			const ref = calcAltStdRefraction(alt)*ctx.refMul;
+			alt -= ref;
+		}
+		const rad = 90 - alt;
+		const lop = {
+			type: COP,
+			center: ctx.gp,
+			radius: rad*DEG,
+		};
+		ctx.radLOP.push(lop);
+		ctx.lops.push(lop);
+	},
+});
+
+commands.push({
+	regex: /^\s*hs\s*:/i,
+	run: function(ctx, line, lineIndex) {
+		const value = line.replace(this.regex, '').trim();
+		const hs = parseDegree(value);
+		if (isNaN(hs)) {
+			throw new ScriptError('invalid angle', lineIndex);
+		}
+		if (ctx.gp === null) {
+			throw new ScriptError('no geographical position given', lineIndex);
+		}
+		let alt = hs;
+		if (ctx.height != null) {
+			const dip = calcDip(ctx.height);
+			alt -= dip;
 		}
 		if (ctx.refMul != null) {
 			const ref = calcAltStdRefraction(alt)*ctx.refMul;
