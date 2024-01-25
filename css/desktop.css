@@ -1,0 +1,29 @@
+body {
+	overflow: hidden;
+	--console-width: 380px;
+}
+@media only screen and (min-width:1200px) {
+	body {
+		--console-width: 480px;
+	}
+}
+div.text,
+div.logs {
+	position: absolute;
+	top: 46px;
+	bottom: 10px;
+}
+div.text {
+	right: calc(var(--console-width) + 20px);
+	left: 10px;
+}
+div.logs {
+	width: var(--console-width);
+	right: 10px;
+}
+.logs textarea {
+	height: 100%;
+}
+.text textarea {
+	height: calc(100% - 36px);
+}

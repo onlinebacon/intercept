@@ -126,7 +126,7 @@ const listLOPDifferences = (lops, coord, showOutliers = false) => {
 	write(tableToText(table));
 };
 
-const finish = (ctx) => {
+const solve = async (ctx) => {
 	const minimizers = icosahedronCoords.map(coord => {
 		const fn = (coord) => {
 			let sum = 0;
@@ -142,8 +142,13 @@ const finish = (ctx) => {
 		};
 		return new SphericalMinimizer({ coord, fn });
 	});
+	const startTime = Date.now();
 	for (let i=0; i<1000; ++i) {
 		minimizers.forEach(min => min.iterate());
+		const dt = Date.now() - startTime;
+		if (dt > 100) {
+			await new Promise(f => setTimeout(f, 0));
+		}
 	}
 	minimizers.sort((a, b) => a.value - b.value);
 	const res = minimizers[0].coord;
@@ -163,7 +168,7 @@ const finish = (ctx) => {
 	listLOPDifferences(ctx.lops, res, true);
 };
 
-const runScript = () => {
+const runScript = async () => {
 	angleFormatType = DEG_TYP;
 	const ctx = {
 		gp: null,
@@ -174,7 +179,6 @@ const runScript = () => {
 	};
 	const text = input.value;
 	const lines = text.split('\n');
-	output.value = '';
 	for (let i=0; i<lines.length; ++i) {
 		const line = lines[i].replace(/#.*$/, '');
 		if (line.trim() === '') {
@@ -195,7 +199,7 @@ const runScript = () => {
 			return;
 		}
 	}
-	finish(ctx);
+	solve(ctx);
 };
 
 commands.push({
@@ -394,7 +398,6 @@ commands.push({
 });
 
 input.focus();
-input.addEventListener('input', runScript);
 input.value = `
 
 Refraction: Standard
@@ -416,4 +419,20 @@ Compare: 14.6096, 66.0517
 Format: Sec
 
 `.trim();
-runScript();
+
+document.querySelector('#calculate').addEventListener('click', async function() {
+	if (this.hasAttribute('disabled')) {
+		return;
+	}
+	this.setAttribute('disabled', '');
+	output.value = '';
+	const start = Date.now();
+	try {
+		await runScript();
+	} catch(err) {
+		write('Error during execution!');
+	}
+	const end = Date.now();
+	write('\nRuntime: ', end - start, 'ms');
+	this.removeAttribute('disabled');
+});

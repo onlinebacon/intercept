@@ -4,14 +4,21 @@
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
 		<link rel="icon" href="icon.png">
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/desktop.css" media="only screen and (min-width:801px)">
 		<link rel="stylesheet" href="css/mobile.css" media="only screen and (max-width:800px)">
 		<link rel="stylesheet" href="css/light-theme.css" media="(prefers-color-scheme: light)">
 		<script type="module" src="js/index.js"></script>
 	</head>
 	<body>
 		<form spellcheck="false">
+			<div id="header">
+				<div class="title">Intercept Console</div>
+			</div>
 			<div class="text">
 				<textarea></textarea>
+				<div class="panel">
+					<input id="calculate" type="button" value="Calculate">
+				</div>
 			</div>
 			<div class="logs">
 				<textarea disabled></textarea>
