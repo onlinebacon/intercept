@@ -83,8 +83,8 @@ const formatCoord = (coord) => {
 	if (angleFormatType === DEG_TYP) {
 		return coord.map(val => formatAngle(val/DEG)).join(', ');
 	}
-	const lat = formatAngle(coord[0], [ 'S ', 'N ' ]);
-	const lon = formatAngle(coord[1], [ 'W ', 'E ' ]);
+	const lat = formatAngle(coord[0]/DEG, [ 'S ', 'N ' ]);
+	const lon = formatAngle(coord[1]/DEG, [ 'W ', 'E ' ]);
 	return `${lat}, ${lon}`;
 };
 
