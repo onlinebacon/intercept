@@ -420,11 +420,12 @@ Format: Sec
 
 `.trim();
 
+const msgDom = document.querySelector('.panel .message');
 document.querySelector('#calculate').addEventListener('click', async function() {
 	if (this.hasAttribute('disabled')) {
 		return;
 	}
-	document.querySelector('.panel .message').innerText = 'Calculating...';
+	msgDom.innerText = 'Calculating...';
 	this.setAttribute('disabled', '');
 	output.value = '';
 	const start = Date.now();
@@ -435,5 +436,6 @@ document.querySelector('#calculate').addEventListener('click', async function() 
 	}
 	const end = Date.now();
 	write('\nRuntime: ', end - start, 'ms');
+	msgDom.innerText = '';
 	this.removeAttribute('disabled');
 });
