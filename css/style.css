@@ -37,7 +37,9 @@ form {
 .panel {
 	background-color: #282828;
 	height: 36px;
-	text-align: right;
+}
+.panel .buttons {
+	float: right;
 }
 .panel input[type=button] {
 	margin-top: 6px;
@@ -54,4 +56,10 @@ form {
 	background-color: #222;
 	color: #888;
 	cursor: default;
+}
+.panel .message {
+	padding-top: 11px;
+	margin-left: 8px;
+	color: #666;
+	font-style: italic;
 }

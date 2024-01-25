@@ -199,7 +199,7 @@ const runScript = async () => {
 			return;
 		}
 	}
-	solve(ctx);
+	await solve(ctx);
 };
 
 commands.push({
@@ -424,6 +424,7 @@ document.querySelector('#calculate').addEventListener('click', async function() 
 	if (this.hasAttribute('disabled')) {
 		return;
 	}
+	document.querySelector('.panel .message').innerText = 'Calculating...';
 	this.setAttribute('disabled', '');
 	output.value = '';
 	const start = Date.now();
