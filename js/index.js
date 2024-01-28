@@ -142,12 +142,14 @@ const solve = async (ctx) => {
 		};
 		return new SphericalMinimizer({ coord, fn });
 	});
-	const startTime = Date.now();
+	const maxLockTime = 100;
+	let stopTime = Date.now() + maxLockTime;
 	for (let i=0; i<1000; ++i) {
 		minimizers.forEach(min => min.iterate());
-		const dt = Date.now() - startTime;
-		if (dt > 100) {
+		const now = Date.now();
+		if (now > stopTime) {
 			await new Promise(f => setTimeout(f, 0));
+			stopTime = now + maxLockTime;
 		}
 	}
 	minimizers.sort((a, b) => a.value - b.value);
