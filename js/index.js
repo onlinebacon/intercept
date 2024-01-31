@@ -206,6 +206,7 @@ const runScript = async () => {
 		const cmd = commands.find(cmd => cmd.regex.test(line));
 		if (cmd == null) {
 			write(`Line ${i + 1} is invalid`);
+			write('Line content: ', lines[i].trim());
 			return;
 		}
 		try {
