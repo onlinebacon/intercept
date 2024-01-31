@@ -6,6 +6,7 @@ import { parseLatLon } from './lib/js/parse-lat-lon.js';
 import * as S from './lib/js/sphere-math.js';
 import { SphericalMinimizer } from './lib/js/spherical-minimizer.js';
 import { D180, D360, DEG } from './lib/js/trig.js';
+import { isMilsFormat, parseMils } from './mils.js';
 import { parseHeight } from './parse-height.js';
 import { parseRefractionMultiplier } from './parse-refraction.js';
 import { tableToText } from './table-to-text.js';
@@ -34,6 +35,13 @@ class ScriptError extends Error {
 		this.lineIndex = lineIndex;
 	}
 }
+
+const parseAngle = (angle) => {
+	if (isMilsFormat(angle)) {
+		return parseMils(angle);
+	}
+	return parseDegree(angle);
+};
 
 const angleDif = (target, reference) => {
 	const rawDif = (target - reference)%D360;
@@ -252,7 +260,7 @@ commands.push({
 	regex: /^\s*rad(ius)?\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
-		const rad = parseDegree(value);
+		const rad = parseAngle(value);
 		if (isNaN(rad)) {
 			throw new ScriptError('invalid angle', lineIndex);
 		}
@@ -285,7 +293,7 @@ commands.push({
 	regex: /^\s*(zen(ith)?|zn|co-?alt)\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
-		let zen = parseDegree(value);
+		let zen = parseAngle(value);
 		if (isNaN(zen)) {
 			throw new ScriptError('invalid angle', lineIndex);
 		}
@@ -313,7 +321,7 @@ commands.push({
 	regex: /^\s*(alt(itude)?|elevation)\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
-		let alt = parseDegree(value);
+		let alt = parseAngle(value);
 		if (isNaN(alt)) {
 			throw new ScriptError('invalid angle', lineIndex);
 		}
@@ -339,7 +347,7 @@ commands.push({
 	regex: /^\s*hs\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
-		const hs = parseDegree(value);
+		const hs = parseAngle(value);
 		if (isNaN(hs)) {
 			throw new ScriptError('invalid angle', lineIndex);
 		}
@@ -370,7 +378,7 @@ commands.push({
 	regex: /^\s*(azm|azimuth)\s*:/i,
 	run: function(ctx, line, lineIndex) {
 		const value = line.replace(this.regex, '').trim();
-		const azm = parseDegree(value);
+		const azm = parseAngle(value);
 		if (isNaN(azm)) {
 			throw new ScriptError('invalid angle', lineIndex);
 		}
