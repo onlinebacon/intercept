@@ -428,7 +428,7 @@ commands.push({
 });
 
 input.focus();
-input.value = `
+const defaultScript = `
 
 Refraction: Standard
 
@@ -468,4 +468,7 @@ document.querySelector('#calculate').addEventListener('click', async function() 
 	write('\nRuntime: ', end - start, 'ms');
 	msgDom.innerText = '';
 	this.removeAttribute('disabled');
+	window.localStorage?.setItem('code', input.value);
 });
+
+input.value = window.localStorage?.getItem('code') ?? defaultScript;
