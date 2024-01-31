@@ -36,6 +36,12 @@ class ScriptError extends Error {
 	}
 }
 
+let forceFigures = undefined;
+
+const round = (value, figures = 0) => {
+	return Number(value.toFixed(figures));
+};
+
 const parseAngle = (angle) => {
 	if (isMilsFormat(angle)) {
 		return parseMils(angle);
@@ -55,22 +61,24 @@ const angleDif = (target, reference) => {
 };
 
 const formatAngleToDeg = (angle, [ negSign = '-', posSign = '' ] = []) => {
-	const deg = Number(Math.abs(angle).toFixed(6));
+	const deg = round(Math.abs(angle), forceFigures ?? 6);
 	const sign = angle < 0 ? negSign : posSign;
 	return `${sign}${deg}°`;
 };
 
 const formatAngleToMin = (angle, [ negSign = '-', posSign = '' ] = []) => {
-	const totalMin = Number((Math.abs(angle)*60).toFixed(1));
-	const min = Number((totalMin % 60).toFixed(1));
+	const figs = forceFigures ?? 1;
+	const totalMin = round((Math.abs(angle)*60), figs);
+	const min = round(totalMin % 60, figs);
 	const deg = Math.round((totalMin - min)/60);
 	const sign = angle < 0 ? negSign : posSign;
 	return `${sign}${deg}°${min}'`;
 };
 
 const formatAngleToSec = (angle, [ negSign = '-', posSign = '' ] = []) => {
-	const totalSec = Number((Math.abs(angle)*60*60).toFixed(1));
-	const sec = Number((totalSec % 60).toFixed(1));
+	const figs = forceFigures ?? 1;
+	const totalSec = round(Math.abs(angle)*60*60, figs);
+	const sec = round(totalSec % 60, figs);
 	const totalMin = Math.round((totalSec - sec)/60);
 	const min = Math.round(totalMin % 60);
 	const deg = Math.round((totalMin - min)/60);
@@ -179,6 +187,7 @@ const solve = async (ctx) => {
 };
 
 const runScript = async () => {
+	forceFigures = undefined;
 	angleFormatType = DEG_TYP;
 	const ctx = {
 		gp: null,
@@ -392,6 +401,17 @@ commands.push({
 		};
 		ctx.azmLOP.push(lop);
 		ctx.lops.push(lop);
+	},
+});
+
+commands.push({
+	regex: /^\s*figures:/i,
+	run: function(ctx, line, lineIndex) {
+		const value = Number(line.replace(this.regex, '').trim());
+		if (isNaN(value) || !Number.isInteger(value) || value < 0) {
+			throw new ScriptError('invalid number of figures', lineIndex);
+		}
+		forceFigures = value;
 	},
 });
 
