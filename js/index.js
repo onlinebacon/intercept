@@ -199,7 +199,7 @@ const runScript = async () => {
 	const text = input.value;
 	const lines = text.split('\n');
 	for (let i=0; i<lines.length; ++i) {
-		const line = lines[i].replace(/#.*$/, '');
+		const line = lines[i].replace(/(#|\/\/).*$/, '');
 		if (line.trim() === '') {
 			continue;
 		}
