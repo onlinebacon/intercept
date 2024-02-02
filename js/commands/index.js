@@ -3,10 +3,12 @@ import { ExecutionContext } from '../execution-context.js';
 import heightCommand from './commands/height.js';
 import * as stdout from '../stdout/index.js';
 import gpCommand from './commands/gp.js';
+import radCommand from './commands/rad.js';
 
 export const commands = [
 	heightCommand,
 	gpCommand,
+	radCommand,
 ];
 
 export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {

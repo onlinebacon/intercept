@@ -7,7 +7,6 @@ import { calcDip } from '../../calc-dip.js';
 
 const heightCommand = new Command({
 	name: 'Height',
-	description: 'Sets the observer\'s height for dip correction',
 	regex: /^\s*height:/i,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(/^\s*height:/i, '').trim();
@@ -16,7 +15,7 @@ const heightCommand = new Command({
 			throw new ScriptError('Invalid height', lineIndex);
 		}
 		const dip = calcDip(heightMeters);
-		stdout.writeln(`Dip for height of "${content}" = ${ctx.deg(dip)}`);
+		stdout.writeln(`Dip for height of "${content}": ${ctx.deg(dip)}`);
 	},
 });
 

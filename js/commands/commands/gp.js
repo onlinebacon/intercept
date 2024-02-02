@@ -6,7 +6,6 @@ import * as stdout from '../../stdout/index.js';
 
 const gpCommand = new Command({
 	name: 'GP',
-	description: 'Sets the geographical position',
 	regex: /^\s*gp:/i,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(/^\s*gp:/i, '').trim();
@@ -15,7 +14,8 @@ const gpCommand = new Command({
 			throw new ScriptError('Invalid GP', lineIndex);
 		}
 		ctx.gp = gp;
-		stdout.writeln(`GP = ${content}`);
+		ctx.gpText = content;
+		stdout.writeln(`GP: ${content}`);
 	},
 });
 
