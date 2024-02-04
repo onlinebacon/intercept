@@ -11,11 +11,19 @@ const runScript = async () => {
 	const lines = input.value.split('\n');
 	const ctx = new ExecutionContext();
 	const startTime = Date.now();
-	await run(ctx, lines);
-	const res = await computeIntercept(ctx);
+	let res = undefined;
+	try {
+		await run(ctx, lines);
+		res = await computeIntercept(ctx);
+	} catch(err) {
+		console.error(err);
+	}
 	const endTime = Date.now();
-	stdout.writeln('Result: ', new LatLonFormatter(ctx.angleFormatter).format(res));
+	if (res !== undefined) {
+		stdout.writeln('Result: ', new LatLonFormatter(ctx.angleFormatter).format(res));
+	}
 	stdout.writeln('Runtime: ', endTime - startTime, ' ms');
+	console.log(ctx);
 };
 
 document.querySelector('#calculate').addEventListener('click', runScript);
@@ -23,10 +31,16 @@ input.addEventListener('input', runScript);
 
 input.value = `
 
-Height: 60ft
+Height: 6 m
 
-GP: 32 N, 42 W
-Rad: 100
+GP: S 63.219265°, W 177.450364°
+Rad: 41.029725
+
+GP: S 52.707083°, E 91.161726°
+Rad: 20.984725
+
+Temperature: 8° F
+Pressure: 29 inHg
 
 `.trim();
 runScript();

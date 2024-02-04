@@ -4,11 +4,15 @@ import heightCommand from './commands/height.js';
 import * as stdout from '../stdout/index.js';
 import gpCommand from './commands/gp.js';
 import radCommand from './commands/rad.js';
+import temperatureCommand from './commands/temperature.js';
+import pressureCommand from './commands/pressure.js';
 
 export const commands = [
 	heightCommand,
 	gpCommand,
 	radCommand,
+	temperatureCommand,
+	pressureCommand,
 ];
 
 export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
@@ -20,18 +24,17 @@ export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
 		const command = commands.find(command => command.regex.test(line));
 		if (!command) {
 			stdout.writeln('Error at line ', i + 1, ': invalid command line');
-			break;
+			throw new ScriptError('Invalid command line', i);
 		}
 		try {
 			await command.run(ctx, line, i);
 		} catch(error) {
 			if (error instanceof ScriptError) {
 				stdout.writeln('Error at line ', i + 1, ': ', error.message);
-				break;
 			} else {
 				stdout.writeln('Internal error!');
-				throw error;
 			}
+			throw error;
 		}
 	}
 };

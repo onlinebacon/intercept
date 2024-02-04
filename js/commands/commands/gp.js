@@ -3,6 +3,7 @@ import { ScriptError } from '../../errors/script-error.js';
 import { Command } from '../model.js';
 import { parseLatLon } from '../../lib/js/parse-lat-lon.js';
 import * as stdout from '../../stdout/index.js';
+import { toRad } from '../../degrees-radians.js';
 
 const gpCommand = new Command({
 	name: 'GP',
@@ -13,8 +14,7 @@ const gpCommand = new Command({
 		if (!gp) {
 			throw new ScriptError('Invalid GP', lineIndex);
 		}
-		ctx.gp = gp;
-		ctx.gpText = content;
+		ctx.gp = gp.map(toRad);
 		stdout.writeln(`GP: ${content}`);
 	},
 });

@@ -15,7 +15,8 @@ const heightCommand = new Command({
 			throw new ScriptError('Invalid height', lineIndex);
 		}
 		const dip = calcDip(heightMeters);
-		stdout.writeln(`Dip for height of "${content}": ${ctx.deg(dip)}`);
+		stdout.writeln(`Dip for height of ${content}: ${ctx.rad(dip)}`);
+		ctx.dip = dip;
 	},
 });
 
