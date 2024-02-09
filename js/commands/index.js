@@ -7,6 +7,7 @@ import radCommand from './commands/rad.js';
 import temperatureCommand from './commands/temperature.js';
 import pressureCommand from './commands/pressure.js';
 import znCommand from './commands/zn.js';
+import hsCommand from './commands/hs.js';
 
 export const commands = [
 	heightCommand,
@@ -15,6 +16,7 @@ export const commands = [
 	temperatureCommand,
 	pressureCommand,
 	znCommand,
+	hsCommand,
 ];
 
 export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
