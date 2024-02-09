@@ -9,3 +9,13 @@ body {
 	background-color: #fff;
 	color: #000 !important;
 }
+#header {
+	background-color: #468;
+}
+div.panel {
+	background-color: #468;
+}
+div.panel input[type="button"] {
+	background-color: #246;
+	border-color: #79b;
+}

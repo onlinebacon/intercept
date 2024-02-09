@@ -4,7 +4,6 @@ import { parseToCelsius } from '../../parse-temperature.js';
 import { Command } from '../model.js';
 
 const regex = /^\s*temperature:/i;
-
 const temperatureCommand = new Command({
 	name: 'Temperature',
 	regex,

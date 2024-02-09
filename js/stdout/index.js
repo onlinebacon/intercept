@@ -1,11 +1,11 @@
 const textarea = document.querySelector('.logs textarea');
 
-export const writeln = (...args) => {
-	textarea.value += args.join('') + '\n';
-};
-
 export const write = (...args) => {
 	textarea.value += args.join('');
+};
+
+export const writeln = (...args) => {
+	write(...args, '\n');
 };
 
 export const clear = () => {

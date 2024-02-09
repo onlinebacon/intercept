@@ -6,6 +6,7 @@ import gpCommand from './commands/gp.js';
 import radCommand from './commands/rad.js';
 import temperatureCommand from './commands/temperature.js';
 import pressureCommand from './commands/pressure.js';
+import znCommand from './commands/zn.js';
 
 export const commands = [
 	heightCommand,
@@ -13,11 +14,12 @@ export const commands = [
 	radCommand,
 	temperatureCommand,
 	pressureCommand,
+	znCommand,
 ];
 
 export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
 	for (let i=0; i<lines.length; ++i) {
-		const line = lines[i].replace(/#.*/, '').trim();
+		const line = lines[i].replace(/(#|\/\/).*/, '').trim();
 		if (line === '') {
 			continue;
 		}

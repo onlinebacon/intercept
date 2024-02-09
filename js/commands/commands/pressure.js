@@ -4,7 +4,6 @@ import { parseToMb } from '../../parse-pressure.js';
 import { Command } from '../model.js';
 
 const regex = /^\s*pressure:/i;
-
 const pressureCommand = new Command({
 	name: 'Pressure',
 	regex,
