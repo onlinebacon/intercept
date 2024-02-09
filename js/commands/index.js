@@ -8,15 +8,17 @@ import temperatureCommand from './commands/temperature.js';
 import pressureCommand from './commands/pressure.js';
 import znCommand from './commands/zn.js';
 import hsCommand from './commands/hs.js';
+import azCommand from './commands/az.js';
 
 export const commands = [
 	heightCommand,
-	gpCommand,
-	radCommand,
 	temperatureCommand,
 	pressureCommand,
+	gpCommand,
+	radCommand,
 	znCommand,
 	hsCommand,
+	azCommand,
 ];
 
 export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
