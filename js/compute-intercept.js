@@ -2,6 +2,7 @@ import { toDeg } from './degrees-radians.js';
 import { ExecutionContext } from './execution-context.js';
 import { icosahedronCoords } from './lib/js/icosahedron-coords.js';
 import { SphericalMinimizer } from './lib/js/spherical-minimizer.js';
+import { removeBadResults, removeDoubles } from './reduce-solutions.js';
 
 export const computeIntercept = async (ctx = new ExecutionContext()) => {
 	const { lops } = ctx;
@@ -27,6 +28,7 @@ export const computeIntercept = async (ctx = new ExecutionContext()) => {
 			timeout = now + maxLock;
 		}
 	}
-	minimizers.sort((a, b) => a.value - b.value);
-	return minimizers[0].coord.map(toDeg);
+	removeDoubles(minimizers);
+	removeBadResults(minimizers);
+	return minimizers.map(m => m.coord.map(toDeg));
 };

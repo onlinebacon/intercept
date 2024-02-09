@@ -2,7 +2,6 @@ import { run } from './commands/index.js';
 import { computeIntercept } from './compute-intercept.js';
 import { ScriptError } from './errors/script-error.js';
 import { ExecutionContext } from './execution-context.js';
-import { LatLonFormatter } from './lib/js/lat-lon-formatter.js';
 import * as stdout from './stdout/index.js';
 
 const input = document.querySelector('.text textarea');
@@ -12,7 +11,7 @@ const runScript = async () => {
 	const lines = input.value.split('\n');
 	const ctx = new ExecutionContext();
 	const startTime = Date.now();
-	let res = undefined;
+	let res;
 	try {
 		await run(ctx, lines);
 		res = await computeIntercept(ctx);
@@ -22,8 +21,13 @@ const runScript = async () => {
 		}
 	}
 	const endTime = Date.now();
-	if (res !== undefined) {
-		stdout.writeln('\nResult: ', new LatLonFormatter(ctx.angleFormatter).format(res));
+	if (res != null) {
+		if (res.length === 1) {
+			stdout.writeln('\nResult: ', ctx.latLon(res[0]));
+		} else {
+			stdout.writeln('\nResults:');
+			res.forEach(gp => stdout.writeln('- ', ctx.latLon(gp)));
+		}
 	}
 	stdout.writeln('\nRuntime: ', endTime - startTime, ' ms');
 };
