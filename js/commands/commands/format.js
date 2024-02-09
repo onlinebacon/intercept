@@ -1,11 +1,11 @@
 import { ScriptError } from '../../errors/script-error.js';
-import { ExecutionContext } from '../../execution-context.js';
+import { ExecutionContext } from '../../script/execution-context.js';
 import { Command } from '../model.js';
 
-const regex = /^\s*Format:/i;
+const regex = /^\s*format:/i;
 const pattern = /^(\.0*1\s*)?(deg|min|sec)$/i;
 const typeRegex = /[a-z]+$/i;
-const radCommand = new Command({
+const formatCommand = new Command({
 	name: 'Format',
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
@@ -14,21 +14,21 @@ const radCommand = new Command({
 		if (!pattern.test(content)) {
 			throw new ScriptError('Invalid format syntax');
 		}
-		const type = content.match(typeRegex)[0].trim();
+		const type = content.match(typeRegex)[0].trim().toLowerCase();
 		const remain = content.replace(typeRegex, '').trim();
-		if (remain !== null) {
+		if (remain !== '') {
 			figures = remain.length - 1;
 		}
 		if (type === 'deg') {
-			ctx.angleFormatter = ctx.angleFormatter.decimals().figures(figures);
+			ctx.angleFormatter = ctx.angleFormatter.decimals().withFigures(figures);
 		}
 		if (type === 'min') {
-			ctx.angleFormatter = ctx.angleFormatter.minutes().figures(figures);
+			ctx.angleFormatter = ctx.angleFormatter.minutes().withFigures(figures);
 		}
 		if (type === 'sec') {
-			ctx.angleFormatter = ctx.angleFormatter.seconds().figures(figures);
+			ctx.angleFormatter = ctx.angleFormatter.seconds().withFigures(figures);
 		}
 	},
 });
 
-export default radCommand;
+export default formatCommand;

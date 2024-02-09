@@ -1,8 +1,8 @@
-import { toDeg, toRad } from './degrees-radians.js';
-import { AngleFormatter } from './lib/js/angle-formatter.js';
-import { LatLonFormatter } from './lib/js/lat-lon-formatter.js';
-import { AzimuthLOP, DistanceLOP, LOP } from './lop.js';
-import { writeln } from './stdout/index.js';
+import { toDeg } from '../calc/degrees-radians.js';
+import { AngleFormatter } from '../lib/js/angle-formatter.js';
+import { LatLonFormatter } from '../lib/js/lat-lon-formatter.js';
+import { AzLoP, CoP, LoP } from './lop.js';
+import { writeln } from '../stdout.js';
 
 export class ExecutionContext {
 	constructor() {
@@ -10,9 +10,12 @@ export class ExecutionContext {
 		this.gp = false ? [ 0, 0 ] : null;
 		this.angleFormatter = new AngleFormatter().minutes();
 		this.indexErr = 0;
-		this.lops = false ? [ new LOP() ] : [];
+		this.lops = false ? [ new LoP() ] : [];
 		this.pressMb = 1010;
 		this.tempCelsius = 10;
+		this.labels = [];
+		this.results = false ? [[ 0, 0 ]] : null;
+		this.compare = false ? [ 0, 0 ] : null;
 	}
 	deg(value) {
 		return this.angleFormatter.format(value);
@@ -29,7 +32,7 @@ export class ExecutionContext {
 	addCoP(rad) {
 		writeln('- Added CoP: ', this.radLatLon(this.gp), ', ', this.rad(rad));
 		this.lops.push(
-			new DistanceLOP({
+			new CoP({
 				position: this.gp,
 				value: rad,
 			}),
@@ -39,7 +42,7 @@ export class ExecutionContext {
 	addAzLoP(az) {
 		writeln('- Added Az LoP: ', this.radLatLon(this.gp), ', ', this.rad(az));
 		this.lops.push(
-			new AzimuthLOP({
+			new AzLoP({
 				position: this.gp,
 				value: az,
 			}),

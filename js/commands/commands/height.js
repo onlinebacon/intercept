@@ -1,9 +1,9 @@
-import { ExecutionContext } from '../../execution-context.js';
+import { ExecutionContext } from '../../script/execution-context.js';
 import { ScriptError } from '../../errors/script-error.js';
-import { parseHeightMeters } from '../../parse-height.js';
+import { parseHeightMeters } from '../../parsers/parse-height.js';
 import { Command } from '../model.js';
-import * as stdout from '../../stdout/index.js';
-import { calcDip } from '../../calc-dip.js';
+import * as stdout from '../../stdout.js';
+import { calcDip } from '../../calc/calc-dip.js';
 
 const heightCommand = new Command({
 	name: 'Height',

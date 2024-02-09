@@ -1,4 +1,4 @@
-import { ExecutionContext } from '../execution-context.js';
+import { ExecutionContext } from '../script/execution-context.js';
 
 export class Command {
 	constructor({

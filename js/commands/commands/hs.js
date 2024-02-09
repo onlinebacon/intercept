@@ -1,10 +1,11 @@
-import { calcAltStdRefraction } from '../../calc-alt-refraction.js';
-import { toRad } from '../../degrees-radians.js';
+import { calcAltStdRefraction } from '../../calc/calc-alt-refraction.js';
+import { toRad } from '../../calc/degrees-radians.js';
 import { ScriptError } from '../../errors/script-error.js';
-import { ExecutionContext } from '../../execution-context.js';
-import { parseAngle } from '../../parse-angle.js';
-import { writeln } from '../../stdout/index.js';
+import { ExecutionContext } from '../../script/execution-context.js';
+import { parseAngle } from '../../parsers/parse-angle.js';
+import { writeln } from '../../stdout.js';
 import { Command } from '../model.js';
+import { moveLabel } from '../utils.js';
 
 const regex = /^\s*Hs:/i;
 const hsCommand = new Command({
@@ -14,6 +15,8 @@ const hsCommand = new Command({
 		if (!ctx.gp) {
 			throw new ScriptError('No geographical position', lineIndex);
 		}
+
+		line = moveLabel(ctx, line);
 
 		const hs = parseAngle(line.replace(regex, ''));
 		if (isNaN(hs)) {

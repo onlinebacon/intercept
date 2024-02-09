@@ -1,6 +1,6 @@
 import { ScriptError } from '../../errors/script-error.js';
-import { ExecutionContext } from '../../execution-context.js';
-import { parseToMb } from '../../parse-pressure.js';
+import { ExecutionContext } from '../../script/execution-context.js';
+import { parseToMb } from '../../parsers/parse-pressure.js';
 import { Command } from '../model.js';
 
 const regex = /^\s*pressure:/i;

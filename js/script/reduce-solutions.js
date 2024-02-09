@@ -1,4 +1,4 @@
-import { haversine } from './lib/js/sphere-math.js';
+import { haversine } from '../lib/js/sphere-math.js';
 
 const DEG = Math.PI/180;
 const ARCMIN = DEG/60;

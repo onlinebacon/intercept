@@ -1,4 +1,4 @@
-import { parseDegree } from './lib/js/parse-degree.js';
+import { parseDegree } from '../lib/js/parse-degree.js';
 
 const milSuffix = /mils?$/i;
 

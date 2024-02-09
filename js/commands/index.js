@@ -1,7 +1,7 @@
 import { ScriptError } from '../errors/script-error.js';
-import { ExecutionContext } from '../execution-context.js';
+import { ExecutionContext } from '../script/execution-context.js';
 import heightCommand from './commands/height.js';
-import * as stdout from '../stdout/index.js';
+import * as stdout from '../stdout.js';
 import gpCommand from './commands/gp.js';
 import radCommand from './commands/rad.js';
 import temperatureCommand from './commands/temperature.js';
@@ -9,6 +9,9 @@ import pressureCommand from './commands/pressure.js';
 import znCommand from './commands/zn.js';
 import hsCommand from './commands/hs.js';
 import azCommand from './commands/az.js';
+import formatCommand from './commands/format.js';
+import compareCommand from './commands/compare.js';
+import indexCommand from './commands/index.js';
 
 export const commands = [
 	heightCommand,
@@ -19,9 +22,12 @@ export const commands = [
 	znCommand,
 	hsCommand,
 	azCommand,
+	formatCommand,
+	compareCommand,
+	indexCommand,
 ];
 
-export const run = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
+export const runCommands = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
 	for (let i=0; i<lines.length; ++i) {
 		const line = lines[i].replace(/(#|\/\/).*/, '').trim();
 		if (line === '') {

@@ -1,6 +1,6 @@
 import { ScriptError } from '../../errors/script-error.js';
-import { ExecutionContext } from '../../execution-context.js';
-import { parseToCelsius } from '../../parse-temperature.js';
+import { ExecutionContext } from '../../script/execution-context.js';
+import { parseToCelsius } from '../../parsers/parse-temperature.js';
 import { Command } from '../model.js';
 
 const regex = /^\s*temperature:/i;

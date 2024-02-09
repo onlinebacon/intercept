@@ -1,8 +1,8 @@
-import { calcAzimuth, haversine } from './lib/js/sphere-math.js';
+import { calcAzimuth, haversine } from '../lib/js/sphere-math.js';
 const { PI } = Math;
 const TAU = PI*2;
 
-export class LOP {
+export class LoP {
 	constructor({
 		position = [ 0, 0 ],
 		value = 0,
@@ -15,13 +15,13 @@ export class LOP {
 	}
 }
 
-export class DistanceLOP extends LOP {
+export class CoP extends LoP {
 	error(coord = [ 0, 0 ]) {
 		return haversine(coord, this.position) - this.value;
 	}
 }
 
-export class AzimuthLOP extends LOP {
+export class AzLoP extends LoP {
 	error(coord = [ 0, 0 ]) {
 		const diff = calcAzimuth(coord, this.position) - this.value;
 		if (diff > PI) {
