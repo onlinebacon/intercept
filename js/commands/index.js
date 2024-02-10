@@ -12,11 +12,13 @@ import azCommand from './commands/az.js';
 import formatCommand from './commands/format.js';
 import compareCommand from './commands/compare.js';
 import indexCommand from './commands/index.js';
+import unitCommand from './commands/unit.js';
 
 export const commands = [
 	heightCommand,
 	temperatureCommand,
 	pressureCommand,
+	unitCommand,
 	gpCommand,
 	radCommand,
 	znCommand,
