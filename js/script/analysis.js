@@ -2,8 +2,8 @@ import { toDeg } from '../calc/degrees-radians.js';
 import { ExecutionContext } from './execution-context.js';
 import { AzLoP } from './lop.js';
 import { writeln } from '../stdout.js';
-import { haversine } from '../lib/js/sphere-math.js';
-import { EARTH_AV_RAD } from '../constants.js';
+import { calcAzimuth, haversine } from '../lib/js/sphere-math.js';
+import { EARTH_AV_RAD_METERS } from '../constants.js';
 import { round } from '../utils.js';
 
 const showErrors = (ctx, coord) => {
@@ -27,9 +27,9 @@ export const logLoPResiduals = (ctx = new ExecutionContext()) => {
     showErrors(ctx, ctx.results[0]);
 };
 
-export const logError = (ctx = new ExecutionContext()) => {
-    const rad = haversine(ctx.results[0], ctx.compare);
-    const km = rad * EARTH_AV_RAD / 1000;
-    const NM = km / 1.852;
-    writeln(`Error: ${ctx.rad(rad)} / ${round(NM, 3)} NM / ${round(km, 3)} km`);
+export const comptueError = (ctx = new ExecutionContext(), coord) => {
+    const rad = haversine(ctx.compare, coord);
+    const unit = ctx.lenUnit;
+    const dist = rad * EARTH_AV_RAD_METERS / unit.inMeters;
+    return round(dist, 3) + unit.symbols[0];
 };

@@ -1,4 +1,4 @@
-import { logError, logLoPErrors, logLoPResiduals } from '../script/analysis.js';
+import { comptueError, logLoPErrors, logLoPResiduals } from '../script/analysis.js';
 import { runCommands } from '../commands/index.js';
 import { computeIntercept } from './compute-intercept.js';
 import { ScriptError } from '../errors/script-error.js';
@@ -21,15 +21,14 @@ export const run = async (script) => {
 	const endTime = Date.now();
 	const { results } = ctx;
 	if (results != null) {
-		if (results.length === 1) {
-			stdout.writeln('Result: ', ctx.radLatLon(results[0]));
-		} else {
-			stdout.writeln('Results:');
-			results.forEach(gp => stdout.writeln('- ', ctx.radLatLon(gp)));
-		}
-		if (ctx.compare != null) {
-			logError(ctx);
-		}
+		stdout.writeln('Results:');
+		results.forEach((gp, i) => {
+			stdout.writeln((ctx.compare != null) ?
+				`- ${ctx.radLatLon(gp)} (err: ${comptueError(ctx, gp)})`
+			:
+				`- ${ctx.radLatLon(gp)}`
+			);
+		});
 		stdout.writeln('');
 		logLoPResiduals(ctx);
 		if (ctx.compare != null) {

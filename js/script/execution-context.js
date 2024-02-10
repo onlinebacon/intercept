@@ -2,7 +2,7 @@ import { toDeg } from '../calc/degrees-radians.js';
 import { AngleFormatter } from '../lib/js/angle-formatter.js';
 import { LatLonFormatter } from '../lib/js/lat-lon-formatter.js';
 import { AzLoP, CoP, LoP } from './lop.js';
-import { writeln } from '../stdout.js';
+import { NAUTICAL_MILE } from '../lib/js/length-units.js';
 
 export class ExecutionContext {
 	constructor() {
@@ -16,6 +16,7 @@ export class ExecutionContext {
 		this.labels = [];
 		this.results = false ? [[ 0, 0 ]] : null;
 		this.compare = false ? [ 0, 0 ] : null;
+		this.lenUnit = NAUTICAL_MILE;
 	}
 	deg(value) {
 		return this.angleFormatter.format(value);
