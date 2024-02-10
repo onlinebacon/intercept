@@ -1,4 +1,4 @@
-import { logLoPErrors, logLoPResiduals } from '../script/analysis.js';
+import { logError, logLoPErrors, logLoPResiduals } from '../script/analysis.js';
 import { runCommands } from '../commands/index.js';
 import { computeIntercept } from './compute-intercept.js';
 import { ScriptError } from '../errors/script-error.js';
@@ -22,10 +22,13 @@ export const run = async (script) => {
 	const { results } = ctx;
 	if (results != null) {
 		if (results.length === 1) {
-			stdout.writeln('\nResult: ', ctx.radLatLon(results[0]));
+			stdout.writeln('Result: ', ctx.radLatLon(results[0]));
 		} else {
-			stdout.writeln('\nResults:');
+			stdout.writeln('Results:');
 			results.forEach(gp => stdout.writeln('- ', ctx.radLatLon(gp)));
+		}
+		if (ctx.compare != null) {
+			logError(ctx);
 		}
 		stdout.writeln('');
 		logLoPResiduals(ctx);
@@ -34,6 +37,7 @@ export const run = async (script) => {
 			logLoPErrors(ctx);
 		}
 	}
-	stdout.writeln('\nRuntime: ', endTime - startTime, ' ms');
+	stdout.writeln();
+	stdout.writeln('Runtime: ', endTime - startTime, ' ms');
 	localStorage?.setItem('script', script);
 };

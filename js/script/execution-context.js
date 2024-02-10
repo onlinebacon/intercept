@@ -30,7 +30,6 @@ export class ExecutionContext {
 		return this.latLon(latLon.map(toDeg));
 	}
 	addCoP(rad) {
-		writeln('- Added CoP: ', this.radLatLon(this.gp), ', ', this.rad(rad));
 		this.lops.push(
 			new CoP({
 				position: this.gp,
@@ -40,7 +39,6 @@ export class ExecutionContext {
 		return this;
 	}
 	addAzLoP(az) {
-		writeln('- Added Az LoP: ', this.radLatLon(this.gp), ', ', this.rad(az));
 		this.lops.push(
 			new AzLoP({
 				position: this.gp,

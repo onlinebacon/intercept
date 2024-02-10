@@ -2,7 +2,6 @@ import { ExecutionContext } from '../../script/execution-context.js';
 import { ScriptError } from '../../errors/script-error.js';
 import { parseHeightMeters } from '../../parsers/parse-height.js';
 import { Command } from '../model.js';
-import * as stdout from '../../stdout.js';
 import { calcDip } from '../../calc/calc-dip.js';
 
 const heightCommand = new Command({
@@ -15,7 +14,6 @@ const heightCommand = new Command({
 			throw new ScriptError('Invalid height', lineIndex);
 		}
 		const dip = calcDip(heightMeters);
-		stdout.writeln(`Dip for height of ${content}: ${ctx.rad(dip)}`);
 		ctx.dip = dip;
 	},
 });

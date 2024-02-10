@@ -3,7 +3,6 @@ import { toRad } from '../../calc/degrees-radians.js';
 import { ScriptError } from '../../errors/script-error.js';
 import { ExecutionContext } from '../../script/execution-context.js';
 import { parseAngle } from '../../parsers/parse-angle.js';
-import { writeln } from '../../stdout.js';
 import { Command } from '../model.js';
 import { moveLabel } from '../utils.js';
 
@@ -27,7 +26,6 @@ const hsCommand = new Command({
 		const ref = calcAltStdRefraction(ha);
 		const ho = ha - ref;
 		const rad = 90 - ho;
-		writeln('Refraction value: ', ctx.deg(ref));
 
 		ctx.addCoP(toRad(rad));
 	},
