@@ -23,10 +23,10 @@ export const run = async (script) => {
 	if (results != null) {
 		stdout.writeln('Results:');
 		results.forEach((gp, i) => {
-			stdout.writeln((ctx.compare != null) ?
-				`- ${ctx.radLatLon(gp)} (err: ${comptueError(ctx, gp)})`
+			stdout.writeln(` ${i + 1}. `, (ctx.compare != null) ?
+				`${ctx.radLatLon(gp)} (err: ${comptueError(ctx, gp)})`
 			:
-				`- ${ctx.radLatLon(gp)}`
+				ctx.radLatLon(gp)
 			);
 		});
 		stdout.writeln('');

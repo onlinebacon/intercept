@@ -2,7 +2,7 @@ import { toDeg } from '../calc/degrees-radians.js';
 import { ExecutionContext } from './execution-context.js';
 import { AzLoP } from './lop.js';
 import { writeln } from '../stdout.js';
-import { calcAzimuth, haversine } from '../lib/js/sphere-math.js';
+import { haversine } from '../lib/js/sphere-math.js';
 import { EARTH_AV_RAD_METERS } from '../constants.js';
 import { round } from '../utils.js';
 

@@ -3,6 +3,7 @@ import { ScriptError } from '../../errors/script-error.js';
 import { ExecutionContext } from '../../script/execution-context.js';
 import { parseAngle } from '../../parsers/parse-angle.js';
 import { Command } from '../model.js';
+import { moveLabel } from '../utils.js';
 
 const regex = /^\s*rad:/i;
 const radCommand = new Command({
@@ -12,7 +13,7 @@ const radCommand = new Command({
 		if (!ctx.gp) {
 			throw new ScriptError('No geographical position', lineIndex);
 		}
-		const content = line.replace(regex, '').trim();
+		const content = moveLabel(ctx, line.replace(regex, '').trim());
 		const value = parseAngle(content);
 		if (isNaN(value)) {
 			throw new ScriptError('Invalid radius value', lineIndex);
