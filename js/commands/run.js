@@ -1,18 +1,18 @@
 import { ScriptError } from '../errors/script-error.js';
 import { ExecutionContext } from '../script/execution-context.js';
-import heightCommand from './commands/height.js';
+import heightCommand from './command-list/height.js';
 import * as stdout from '../stdout.js';
-import gpCommand from './commands/gp.js';
-import radCommand from './commands/rad.js';
-import temperatureCommand from './commands/temperature.js';
-import pressureCommand from './commands/pressure.js';
-import znCommand from './commands/zn.js';
-import hsCommand from './commands/hs.js';
-import azCommand from './commands/az.js';
-import formatCommand from './commands/format.js';
-import compareCommand from './commands/compare.js';
-import indexCommand from './commands/index.js';
-import unitCommand from './commands/unit.js';
+import gpCommand from './command-list/gp.js';
+import radCommand from './command-list/rad.js';
+import temperatureCommand from './command-list/temperature.js';
+import pressureCommand from './command-list/pressure.js';
+import znCommand from './command-list/zn.js';
+import hsCommand from './command-list/hs.js';
+import azCommand from './command-list/az.js';
+import formatCommand from './command-list/format.js';
+import compareCommand from './command-list/compare.js';
+import indexCommand from './command-list/index.js';
+import unitCommand from './command-list/unit.js';
 
 export const commands = [
 	heightCommand,

@@ -1,5 +1,5 @@
 import { comptueError, logLoPErrors, logLoPResiduals } from '../script/analysis.js';
-import { runCommands } from '../commands/index.js';
+import { runCommands } from '../commands/run.js';
 import { computeIntercept } from './compute-intercept.js';
 import { ScriptError } from '../errors/script-error.js';
 import { ExecutionContext } from './execution-context.js';
