@@ -13,8 +13,12 @@ import formatCommand from './command-list/format.js';
 import compareCommand from './command-list/compare.js';
 import indexCommand from './command-list/index.js';
 import unitCommand from './command-list/unit.js';
+import dateCommand from './command-list/date.js';
+import bodyCommand from './command-list/body.js';
 
 export const commands = [
+	dateCommand,
+	bodyCommand,
 	heightCommand,
 	temperatureCommand,
 	pressureCommand,

@@ -17,6 +17,8 @@ export class ExecutionContext {
 		this.results = false ? [[ 0, 0 ]] : null;
 		this.compare = false ? [ 0, 0 ] : null;
 		this.lenUnit = NAUTICAL_MILE;
+		this.date = null;
+		this.gmtOffset = '+0000';
 	}
 	deg(value) {
 		return this.angleFormatter.format(value);
