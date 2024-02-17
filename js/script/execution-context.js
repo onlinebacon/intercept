@@ -3,6 +3,7 @@ import { AngleFormatter } from '../lib/js/angle-formatter.js';
 import { LatLonFormatter } from '../lib/js/lat-lon-formatter.js';
 import { AzLoP, CoP, LoP } from './lop.js';
 import { NAUTICAL_MILE } from '../lib/js/length-units.js';
+import { buildMinSqrFn } from './min-methods.js';
 
 export class ExecutionContext {
 	constructor() {
@@ -19,6 +20,7 @@ export class ExecutionContext {
 		this.lenUnit = NAUTICAL_MILE;
 		this.date = null;
 		this.gmtOffset = '+0000';
+		this.fnBuilder = buildMinSqrFn;
 	}
 	deg(value) {
 		return this.angleFormatter.format(value);

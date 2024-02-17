@@ -12,6 +12,7 @@ import unitCommand from './command-list/unit.js';
 import dateCommand from './command-list/date.js';
 import bodyCommand from './command-list/body.js';
 import heightCommand from './command-list/height.js';
+import methodCommand from './command-list/method.js';
 
 export const commandList = [
 	dateCommand,
@@ -26,6 +27,7 @@ export const commandList = [
 	hsCommand,
 	azCommand,
 	compareCommand,
+	methodCommand,
 	formatCommand,
 	unitCommand,
 ];

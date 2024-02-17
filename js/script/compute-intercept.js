@@ -5,14 +5,7 @@ import { removeBadResults, removeDoubles } from './reduce-solutions.js';
 import { haversine } from '../lib/js/sphere-math.js';
 
 export const computeIntercept = async (ctx = new ExecutionContext()) => {
-	const { lops } = ctx;
-	const fn = (coord) => {
-		let sum = 0;
-		for (const lop of lops) {
-			sum += lop.error(coord) ** 2;
-		}
-		return sum;
-	};
+	const fn = ctx.fnBuilder(ctx.lops);
 	const minimizers = icosahedronCoords.map(coord => {
 		return new SphericalMinimizer({ fn, coord });
 	});
