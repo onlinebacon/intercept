@@ -6,10 +6,6 @@ document.querySelector('#calculate').addEventListener('click', () => {
 	run(input.value);
 });
 
-input.addEventListener('input', () => {
-	run(input.value);
-});
-
 const initialScript = localStorage?.getItem('script') ?? `
 
 	Format: Sec
