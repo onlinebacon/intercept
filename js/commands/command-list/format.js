@@ -7,12 +7,17 @@ const pattern = /^(\.0*1\s*)?(deg|min|sec)$/i;
 const typeRegex = /[a-z]+$/i;
 const formatCommand = new Command({
 	name: 'Format',
+	description: `
+		Changes the output format of angles.
+		Accepted formats: Deg, Min or Sec.
+		Aditionally, a prefix can be added to the format to specify decimal figures, for example ".1 Sec" or ".0001 Deg".
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		let figures = 0;
 		const content = line.replace(regex, '').trim();
 		if (!pattern.test(content)) {
-			throw new ScriptError('Invalid format syntax');
+			throw new ScriptError('Invalid format syntax', lineIndex);
 		}
 		const type = content.match(typeRegex)[0].trim().toLowerCase();
 		const remain = content.replace(typeRegex, '').trim();

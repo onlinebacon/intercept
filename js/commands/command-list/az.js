@@ -8,6 +8,9 @@ import { moveLabel } from '../utils.js';
 const regex = /^\s*Az:/i;
 const azCommand = new Command({
 	name: 'Az',
+	description: `
+		Speicifes an azimuth angle reading to the last GP to add a new corresponding line of position.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		if (!ctx.gp) {

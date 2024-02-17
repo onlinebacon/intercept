@@ -6,6 +6,9 @@ import { Command } from '../model.js';
 const regex = /^\s*unit:/i;
 const unitCommand = new Command({
 	name: 'Unit',
+	description: `
+		Sets the unit for outputting distance values.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(regex, '').replace(/\s+/, '\x20').trim();

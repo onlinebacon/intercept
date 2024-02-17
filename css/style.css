@@ -77,3 +77,6 @@ form {
 	color: #ccc;
 	padding: 30px;
 }
+p {
+	text-indent: 2em;
+}

@@ -9,6 +9,9 @@ import { moveLabel } from '../utils.js';
 const regex = /^\s*Hs:/i;
 const hsCommand = new Command({
 	name: 'Hs',
+	description: `
+		Specifices a height of sextant reading. All the standard sextant corrections will be applied to add a new circle of position to the set.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		if (!ctx.gp) {

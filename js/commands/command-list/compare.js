@@ -7,6 +7,9 @@ import { toRad } from '../../calc/degrees-radians.js';
 const regex = /^\s*compare:/i;
 const compareCommand = new Command({
 	name: 'Compare',
+	description: `
+		Defines a geographical position to be considered the correct one. This allows errors to be computed and logged in the console.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(regex, '').trim();
