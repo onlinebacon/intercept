@@ -3,7 +3,6 @@ import { toRad } from '../../calc/degrees-radians.js';
 import { ScriptError } from '../../errors/script-error.js';
 import { ExecutionContext } from '../../script/execution-context.js';
 import { parseAngle } from '../../parsers/parse-angle.js';
-import { writeln } from '../../stdout.js';
 import { Command } from '../model.js';
 import { moveLabel } from '../utils.js';
 
@@ -29,7 +28,6 @@ const znCommand = new Command({
 		const alt = 90 - (zn - ctx.indexErr);
 		const mul = ctx.pressMb/1010 * 283/(273 + ctx.tempCelsius);
 		const ref = calcAltStdRefraction(alt) * mul;
-		writeln('Refraction value: ', ctx.deg(ref));
 
 		const rad = toRad(90 - (alt - ref));
 		ctx.addCoP(rad);
