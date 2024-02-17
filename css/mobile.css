@@ -5,8 +5,8 @@ div.text, div.logs {
 	margin: 10px 10px 0px 10px;
 }
 .text textarea {
-	height: 360px;
+	height: 450px;
 }
 .logs textarea {
-	height: 300px;
+	height: 350px;
 }

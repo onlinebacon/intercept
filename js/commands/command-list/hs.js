@@ -1,0 +1,38 @@
+import { calcAltStdRefraction } from '../../calc/calc-alt-refraction.js';
+import { toRad } from '../../calc/degrees-radians.js';
+import { ScriptError } from '../../errors/script-error.js';
+import { ExecutionContext } from '../../script/execution-context.js';
+import { parseAngle } from '../../parsers/parse-angle.js';
+import { Command } from '../model.js';
+import { moveLabel } from '../utils.js';
+
+const regex = /^\s*Hs:/i;
+const hsCommand = new Command({
+	name: 'Hs',
+	description: `
+		Specifices a height of sextant reading. All the standard sextant corrections will be applied to add a new circle of position to the set.
+	`,
+	regex,
+	run: (ctx = new ExecutionContext(), line, lineIndex) => {
+		if (!ctx.gp) {
+			throw new ScriptError('No geographical position', lineIndex);
+		}
+
+		line = moveLabel(ctx, line);
+
+		const hs = parseAngle(line.replace(regex, ''));
+		if (isNaN(hs)) {
+			throw new ScriptError('Invalid angle', lineIndex);
+		}
+
+		const ha = hs - ctx.indexErr - ctx.dip;
+		const ref = calcAltStdRefraction(ha);
+		const ho = ha - ref;
+		const rad = 90 - ho;
+
+		ctx.addCoP(toRad(rad));
+	},
+});
+
+export default hsCommand;
+

@@ -1,11 +1,5 @@
 body {
-	overflow: hidden;
 	--console-width: 380px;
-}
-@media only screen and (min-width:1200px) {
-	body {
-		--console-width: 480px;
-	}
 }
 div.text,
 div.logs {
@@ -26,4 +20,17 @@ div.logs {
 }
 .text textarea {
 	height: calc(100% - 36px);
+}
+#guide {
+	margin: 50px auto;
+	max-width: 700px;
+}
+
+@media only screen and (min-width:1200px) {
+	body {
+		--console-width: 480px;
+	}
+	#guide {
+		max-width: 1000px;
+	}
 }

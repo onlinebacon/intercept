@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<title>Guide - Intercept Console</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'>
+		<link rel="icon" href="icon.png">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/desktop.css" media="only screen and (min-width:801px)">
+		<link rel="stylesheet" href="css/mobile.css" media="only screen and (max-width:800px)">
+		<link rel="stylesheet" href="css/light-theme.css" media="(prefers-color-scheme: light)">
+		<script type="module" src="js/guide.js"></script>
+	</head>
+	<body>
+		<div id="guide">
+			<h1>Guide</h1>
+			<h2>How the Intercept Console works</h2>
+			<p>
+				The Intercept Console allows you to add the necessary information to build lines of position
+				and solve for the most likely pair of coordinates that matches them.</p>
+			<p>
+				For a line of position to be added, at least two of this pieces of information have to be specified:
+				a geographical position and an angle reading.
+				Everytime an angle reading is added a new line of position will be build that matches
+				this reading for the last geographical position input.
+			</p>
+			<h2>Commands</h2>
+			<p>The commands take one line, starting with the command's name, followed by a colon and the command's arguments.</p>
+			<p>You can find a list of commands that can be used to build the lines of position an solve for the intercept below.</p>
+			<div id="commands"></replace>
+		</div>
+	</body>
+</html>

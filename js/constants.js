@@ -1,0 +1,1 @@
+export const EARTH_AV_RAD_METERS = 6371008.8;
