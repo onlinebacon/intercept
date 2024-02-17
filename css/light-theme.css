@@ -19,3 +19,7 @@ div.panel input[type="button"] {
 	background-color: #246;
 	border-color: #79b;
 }
+#guide {
+	background-color: #eee;
+	color: #444;
+}
