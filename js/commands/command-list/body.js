@@ -37,6 +37,11 @@ const setGP = (ctx, body, time) => {
 const regex = /^\s*body:/i;
 const bodyCommand = new Command({
 	name: 'Body',
+	description: `
+		Sets an approximate geographical position for the next lines of position to reference based on a celestial body's name and a given time.
+		Accepted format: Name, hh:mm:ss
+		The seconds can be input with decimal figures.
+	`,
     regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		if (ctx.date == null) {

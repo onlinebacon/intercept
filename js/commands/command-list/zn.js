@@ -10,6 +10,9 @@ import { moveLabel } from '../utils.js';
 const regex = /^\s*Zn:/i;
 const znCommand = new Command({
 	name: 'Zn',
+	description: `
+		Specifies a zenith angle reading. Corrections will applied so this angle reading can result in a radius of a new circle of position.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		if (!ctx.gp) {

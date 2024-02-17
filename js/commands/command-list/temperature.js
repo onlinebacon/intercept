@@ -6,6 +6,10 @@ import { Command } from '../model.js';
 const regex = /^\s*temperature:/i;
 const temperatureCommand = new Command({
 	name: 'Temperature',
+	description: `
+		Sets the tempreature that will be considered for the refraction corrections. The default value is 10° C.
+		It requires the suffix with the unit.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const tempC = parseToCelsius(line.replace(regex, ''));

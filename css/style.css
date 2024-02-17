@@ -36,6 +36,12 @@ form {
 	padding-top: 10px;
 	padding-left: 10px;
 	font-size: 14px;
+	display: inline-block;
+	margin-right: 20px;
+}
+#header a {
+	color: #acf;
+	cursor: pointer;
 }
 .panel {
 	background-color: #282828;
@@ -65,4 +71,9 @@ form {
 	margin-left: 8px;
 	color: #666;
 	font-style: italic;
+}
+#guide {
+	background-color: #222;
+	color: #ccc;
+	padding: 30px;
 }

@@ -7,6 +7,10 @@ import { toRad } from '../../calc/degrees-radians.js';
 const regex = /^\s*gp:/i;
 const gpCommand = new Command({
 	name: 'GP',
+	description: `
+		Sets a geographical position for the next lines of position to reference.
+		Accepted format: latitude (deg), longitude (deg)
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(regex, '').trim();

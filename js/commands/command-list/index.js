@@ -6,6 +6,9 @@ import { parseAngle } from '../../parsers/parse-angle.js';
 const regex = /^\s*index:/i;
 const indexCommand = new Command({
 	name: 'Index',
+	description: `
+		Sets the index error to be corrected. The default value is zero.
+	`,
     regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(regex, '').trim();

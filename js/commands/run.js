@@ -1,37 +1,7 @@
 import { ScriptError } from '../errors/script-error.js';
 import { ExecutionContext } from '../script/execution-context.js';
-import heightCommand from './command-list/height.js';
 import * as stdout from '../stdout.js';
-import gpCommand from './command-list/gp.js';
-import radCommand from './command-list/rad.js';
-import temperatureCommand from './command-list/temperature.js';
-import pressureCommand from './command-list/pressure.js';
-import znCommand from './command-list/zn.js';
-import hsCommand from './command-list/hs.js';
-import azCommand from './command-list/az.js';
-import formatCommand from './command-list/format.js';
-import compareCommand from './command-list/compare.js';
-import indexCommand from './command-list/index.js';
-import unitCommand from './command-list/unit.js';
-import dateCommand from './command-list/date.js';
-import bodyCommand from './command-list/body.js';
-
-export const commands = [
-	dateCommand,
-	bodyCommand,
-	heightCommand,
-	temperatureCommand,
-	pressureCommand,
-	unitCommand,
-	gpCommand,
-	radCommand,
-	znCommand,
-	hsCommand,
-	azCommand,
-	formatCommand,
-	compareCommand,
-	indexCommand,
-];
+import { commandList } from './command-list.js';
 
 export const runCommands = async (ctx = new ExecutionContext(), lines = [ '' ]) => {
 	for (let i=0; i<lines.length; ++i) {
@@ -39,7 +9,7 @@ export const runCommands = async (ctx = new ExecutionContext(), lines = [ '' ]) 
 		if (line === '') {
 			continue;
 		}
-		const command = commands.find(command => command.regex.test(line));
+		const command = commandList.find(command => command.regex.test(line));
 		if (!command) {
 			stdout.writeln('Error at line ', i + 1, ': invalid command line');
 			throw new ScriptError('Invalid command line', i);

@@ -6,6 +6,10 @@ import { parseDate } from '../../parsers/parse-date.js';
 const regex = /^\s*date:/i;
 const dateCommand = new Command({
 	name: 'Date',
+	description: `
+		Sets the date that will be considered for the next commands.
+		Accepted format: yyyy-MM-dd
+	`,
     regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(regex, '').trim();

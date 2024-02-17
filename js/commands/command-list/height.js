@@ -7,6 +7,10 @@ import { calcDip } from '../../calc/calc-dip.js';
 const heightCommand = new Command({
 	name: 'Height',
 	regex: /^\s*height:/i,
+	description: `
+		Sets the observer's height of eye that will be considered for the DIP correction. The default value is zero.
+		It requires the suffix with the unit.
+	`,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const content = line.replace(/^\s*height:/i, '').trim();
 		const heightMeters = parseHeightMeters(content);

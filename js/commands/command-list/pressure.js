@@ -6,6 +6,10 @@ import { Command } from '../model.js';
 const regex = /^\s*pressure:/i;
 const pressureCommand = new Command({
 	name: 'Pressure',
+	description: `
+		Sets the pressure that will be considered for the refraction corrections.
+		It requires the suffix with the unit. The default value is 1010 mb.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		const pressMb = parseToMb(line.replace(regex, ''));

@@ -8,6 +8,10 @@ import { moveLabel } from '../utils.js';
 const regex = /^\s*rad:/i;
 const radCommand = new Command({
 	name: 'Rad',
+	description: `
+		Adds a circle of position around the last GP with the specified radius. The argument is the angular value of the circle's radius.
+		No correction will be applied.
+	`,
 	regex,
 	run: (ctx = new ExecutionContext(), line, lineIndex) => {
 		if (!ctx.gp) {
