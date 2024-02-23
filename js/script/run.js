@@ -38,5 +38,4 @@ export const run = async (script) => {
 	}
 	stdout.writeln();
 	stdout.writeln('Runtime: ', endTime - startTime, ' ms');
-	localStorage?.setItem('script', script);
 };

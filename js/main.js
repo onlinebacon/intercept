@@ -6,20 +6,22 @@ document.querySelector('#calculate').addEventListener('click', () => {
 	run(input.value);
 });
 
-const initialScript = localStorage?.getItem('script') ?? `
+const initialScript = `
 
-	Format: Sec
-	Temperature: 8° F
-	Pressure: 29 inHg
+	Date: 2018-11-15
+	Index: -0.3'
+	Height: 2 m
 
-	Height: 6 m
+	Body: dubhe, 08:32:15
+	Hs: 55° 18.4'
 
-	GP: S 63.219265°, W 177.450364°
-	Zn: 41.029725 (Zn to random star)
-	Az: 223.316736
+	Body: arcturus, 08:30:30
+	Hs: 27° 9'
 
-	GP: S 52.707083°, E 91.161726°
-	Hs: 20.984725
+	Body: regulus, 08:28:15
+	Hs: 70° 48.7'
+
+	Compare: 29 40.5 N, 36 57.0 W
 
 `.trim().split('\n').map(line => line.trim()).join('\n');
 
