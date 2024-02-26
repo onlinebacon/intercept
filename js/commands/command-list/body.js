@@ -5,6 +5,8 @@ import { dataset } from '../../ra-dec-dataset.js';
 import { parseTime } from '../../parsers/parse-time.js';
 import { calcAriesGHA } from '../../calc/calc-aries-gha.js';
 import { toRad } from '../../calc/degrees-radians.js';
+import { blankLine, write, writeln } from '../../stdout.js';
+import { GP_CALC, flagOn } from '../../flags/flags.js';
 
 const lookup = (name) => {
 	return dataset.find(body => body.regex.test(name));
@@ -29,9 +31,20 @@ const setGP = (ctx, body, time) => {
 	const dec = a.dec + (b.dec - a.dec)*t;
 	const ariesGHA = calcAriesGHA(unixTime);
 	const lat = dec;
-	const lon = (ra/24*360 - ariesGHA + 360 + 180) % 360 - 180;
+	const sha = 360 - ra/24*360;
+	const gha = (sha + ariesGHA) % 360;
+	const lon = (360 - gha + 180) % 360 - 180;
 	const gp = [ lat, lon ].map(toRad);
 	ctx.gp = gp;
+	if (flagOn(GP_CALC)) {
+		blankLine();
+		writeln(body.name, ':');
+		writeln('- SHA: ', ctx.deg(sha));
+		writeln('- Dec: ', ctx.deg(dec));
+		writeln('- GHA of Aries: ', ctx.deg(ariesGHA));
+		writeln('- GHA: ', ctx.deg(gha));
+		writeln(`- Longitude: `, ctx.deg(lon));
+	}
 };
 
 const regex = /^\s*body:/i;
@@ -61,6 +74,7 @@ const bodyCommand = new Command({
 		if (!body) {
 			throw new ScriptError(`Couldn't find "${name}" in dataset`, lineIndex);
 		}
+		ctx.defLabel = `${name} at ${time}`;
 		setGP(ctx, body, time);
 	},
 });

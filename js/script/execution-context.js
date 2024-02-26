@@ -21,6 +21,7 @@ export class ExecutionContext {
 		this.date = null;
 		this.gmtOffset = '+0000';
 		this.fnBuilder = buildMinSqrFn;
+		this.defLabel = null;
 	}
 	deg(value) {
 		return this.angleFormatter.format(value);

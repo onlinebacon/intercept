@@ -3,6 +3,8 @@ import { ScriptError } from '../../errors/script-error.js';
 import { parseHeightMeters } from '../../parsers/parse-height.js';
 import { Command } from '../model.js';
 import { calcDip } from '../../calc/calc-dip.js';
+import { CORRECTIONS, flagOn } from '../../flags/flags.js';
+import { writeln } from '../../stdout.js';
 
 const heightCommand = new Command({
 	name: 'Height',
@@ -18,6 +20,9 @@ const heightCommand = new Command({
 			throw new ScriptError('Invalid height', lineIndex);
 		}
 		const dip = calcDip(heightMeters);
+		if (flagOn(CORRECTIONS)) {
+			writeln('Dip: ', ctx.deg(dip));
+		}
 		ctx.dip = dip;
 	},
 });

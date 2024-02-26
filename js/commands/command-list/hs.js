@@ -5,6 +5,8 @@ import { ExecutionContext } from '../../script/execution-context.js';
 import { parseAngle } from '../../parsers/parse-angle.js';
 import { Command } from '../model.js';
 import { moveLabel } from '../utils.js';
+import { CORRECTIONS, flagOn } from '../../flags/flags.js';
+import { blankLine, write, writeln } from '../../stdout.js';
 
 const regex = /^\s*Hs:/i;
 const hsCommand = new Command({
@@ -29,6 +31,15 @@ const hsCommand = new Command({
 		const ref = calcAltStdRefraction(ha);
 		const ho = ha - ref;
 		const rad = 90 - ho;
+
+		if (flagOn(CORRECTIONS)) {
+			blankLine();
+			writeln('Hs of ', ctx.deg(hs), ':');
+			writeln('- Ha: ', ctx.deg(ha));
+			writeln('- Refraction: ', ctx.deg(ref));
+			writeln('- Ho: ', ctx.deg(ho));
+			writeln('- Zenith distance: ', ctx.deg(rad));
+		}
 
 		ctx.addCoP(toRad(rad));
 	},

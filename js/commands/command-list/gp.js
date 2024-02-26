@@ -19,6 +19,7 @@ const gpCommand = new Command({
 			throw new ScriptError('Invalid GP', lineIndex);
 		}
 		ctx.gp = gp.map(toRad);
+		ctx.defLabel = null;
 	},
 });
 

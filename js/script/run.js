@@ -4,6 +4,7 @@ import { computeIntercept } from './compute-intercept.js';
 import { ScriptError } from '../errors/script-error.js';
 import { ExecutionContext } from './execution-context.js';
 import * as stdout from '../stdout.js';
+import { LOP_ERRORS, LOP_RESIDUALS, RUNTIME, flagOn } from '../flags/flags.js';
 
 export const run = async (script) => {
 	stdout.clear();
@@ -21,6 +22,7 @@ export const run = async (script) => {
 	const endTime = Date.now();
 	const { results } = ctx;
 	if (results != null) {
+		stdout.blankLine();
 		stdout.writeln('Results:');
 		results.forEach((gp, i) => {
 			stdout.writeln(` ${i + 1}. `, (ctx.compare != null) ?
@@ -29,13 +31,17 @@ export const run = async (script) => {
 				ctx.radLatLon(gp)
 			);
 		});
-		stdout.writeln('');
-		logLoPResiduals(ctx);
-		if (ctx.compare != null) {
-			stdout.writeln('');
+		if (flagOn(LOP_RESIDUALS)) {
+			stdout.blankLine();
+			logLoPResiduals(ctx);
+		}
+		if (ctx.compare != null && flagOn(LOP_ERRORS)) {
+			stdout.blankLine();
 			logLoPErrors(ctx);
 		}
 	}
-	stdout.writeln();
-	stdout.writeln('Runtime: ', endTime - startTime, ' ms');
+	if (flagOn(RUNTIME)) {
+		stdout.blankLine();
+		stdout.writeln('Runtime: ', endTime - startTime, ' ms');
+	}
 };
