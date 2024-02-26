@@ -1,3 +1,4 @@
+import './settings/settings.js';
 import { run } from './script/run.js';
 
 const input = document.querySelector('.text textarea');

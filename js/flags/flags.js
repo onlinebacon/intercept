@@ -23,8 +23,8 @@ const loadFlags = () => {
 	}
 	const map = JSON.parse(json);
 	for (const key in map) {
-		if (flags[map] !== undefined) {
-			flags[map] = key[map];
+		if (flags[key] !== undefined) {
+			flags[key] = map[key];
 		}
 	}
 };
@@ -32,6 +32,10 @@ const loadFlags = () => {
 export const storeFlags = () => {
 	const json = JSON.stringify(flags);
 	localStorage?.setItem('flags', json);
+};
+
+export const setFlag = (flag, value) => {
+	flags[flag] = value;
 };
 
 loadFlags();

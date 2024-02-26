@@ -49,10 +49,12 @@ form {
 }
 .panel .buttons {
 	float: right;
+	font-size: 0px;
 }
 .panel input[type=button] {
 	margin-top: 6px;
 	margin-right: 6px;
+	margin-left: 0px;
 	height: 24px;
 	border: 1px solid #444;
 	background-color: #333;
@@ -79,4 +81,44 @@ form {
 }
 p {
 	text-indent: 2em;
+}
+.settings-background {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background-color: rgba(0, 0, 0, 0.85);
+}
+.settings-window {
+	background-color: #222;
+	padding: 20px;
+	width: 250px;
+	margin: 50px auto;
+}
+.settings-window .title {
+	font-size: 22px;
+	color: #fff;
+}
+.settings-window .toggles {
+	margin-top: 20px;
+	color: #ccc;
+}
+.settings-window .toggles .toggle button {
+	float: right;
+	border: 2px solid #bbb;
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.75) inset;
+	padding: 0px;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #09f;
+}
+.settings-window .toggles .toggle:not(:nth-child(1)) {
+	margin-top: 15px;
+}
+.settings-window .toggles .toggle button[value="off"] {
+	background-color: #333;
+	border-color: #666;
 }

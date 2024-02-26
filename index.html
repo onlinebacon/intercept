@@ -13,12 +13,13 @@
 		<form spellcheck="false">
 			<div id="header">
 				<div class="title">Intercept Console</div>
-				<a href="guide.html">Guide</a>
+				<a href="guide.html" target="_blank">Guide</a>
 			</div>
 			<div class="text">
 				<textarea></textarea>
 				<div class="panel">
 					<div class="buttons">
+						<input id="settings" type="button" value="Settings">
 						<input id="calculate" type="button" value="Calculate">
 					</div>
 					<div class="message"></div>
@@ -28,5 +29,12 @@
 				<textarea disabled></textarea>
 			</div>
 		</form>
+		<div class="settings-background" style="display:none;">
+			<div class="settings-window">
+				<div class="title">Settings</div>
+				<div class="toggles">
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
