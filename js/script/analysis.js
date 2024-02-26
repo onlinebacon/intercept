@@ -13,7 +13,7 @@ const showErrors = (ctx, coord) => {
         const lop = lops[i];
         const label = labels[i] ?? (lop instanceof AzLoP ? '*Az' : '*CoP');
         const err = toDeg(lop.error(coord));
-        writeln(' ', i + 1, '. ', formatter.format(err), ' // ' + label);
+        writeln(i + 1, '. ', formatter.format(err), ' // ' + label);
     }
 };
 
@@ -27,7 +27,7 @@ export const logLoPResiduals = (ctx = new ExecutionContext()) => {
     showErrors(ctx, ctx.results[0]);
 };
 
-export const comptueError = (ctx = new ExecutionContext(), coord) => {
+export const computeError = (ctx = new ExecutionContext(), coord) => {
     const rad = haversine(ctx.compare, coord);
     const unit = ctx.lenUnit;
     const dist = rad * EARTH_AV_RAD_METERS / unit.inMeters;
