@@ -10,7 +10,7 @@ document.querySelector('#calculate').addEventListener('click', () => {
 
 const initialScript = `
 
-	Date: 2018-11-15
+	Date: Nov 15th, 2018
 	Index: -0.3'
 	Height: 2 m
 	Zone: UTC-5
