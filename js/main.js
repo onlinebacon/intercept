@@ -15,13 +15,13 @@ const initialScript = `
 	Height: 2 m
 	Zone: UTC-5
 
-	Body: dubhe, 08:32:15
+	Body: dubhe, 03:32:15
 	Hs: 55° 18.4'
 
-	Body: arcturus, 08:30:30
+	Body: arcturus, 03:30:30
 	Hs: 27° 9'
 
-	Body: regulus, 08:28:15
+	Body: regulus, 03:28:15
 	Hs: 70° 48.7'
 
 	Compare: 29 40.5 N, 36 57.0 W
