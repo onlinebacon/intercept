@@ -13,9 +13,11 @@ import dateCommand from './command-list/date.js';
 import bodyCommand from './command-list/body.js';
 import heightCommand from './command-list/height.js';
 import methodCommand from './command-list/method.js';
+import zoneCommand from './command-list/zone.js';
 
 export const commandList = [
 	dateCommand,
+	zoneCommand,
 	heightCommand,
 	indexCommand,
 	temperatureCommand,

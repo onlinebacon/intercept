@@ -13,6 +13,7 @@ const initialScript = `
 	Date: 2018-11-15
 	Index: -0.3'
 	Height: 2 m
+	Zone: UTC-5
 
 	Body: dubhe, 08:32:15
 	Hs: 55° 18.4'
