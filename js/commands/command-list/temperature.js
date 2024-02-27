@@ -2,6 +2,7 @@ import { ScriptError } from '../../errors/script-error.js';
 import { ExecutionContext } from '../../script/execution-context.js';
 import { parseToCelsius } from '../../parsers/parse-temperature.js';
 import { Command } from '../model.js';
+import { calcRefMultiplier } from '../../calc/calc-ref-multiplier.js';
 
 const regex = /^\s*temperature:/i;
 const temperatureCommand = new Command({
@@ -17,6 +18,7 @@ const temperatureCommand = new Command({
 			throw new ScriptError('Invalid temperature value', lineIndex);
 		}
 		ctx.tempCelsius = tempC;
+		ctx.refMul = calcRefMultiplier(tempC, ctx.pressMb);
 	},
 });
 

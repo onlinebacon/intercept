@@ -2,6 +2,7 @@ import { ScriptError } from '../../errors/script-error.js';
 import { ExecutionContext } from '../../script/execution-context.js';
 import { parseToMb } from '../../parsers/parse-pressure.js';
 import { Command } from '../model.js';
+import { calcRefMultiplier } from '../../calc/calc-ref-multiplier.js';
 
 const regex = /^\s*pressure:/i;
 const pressureCommand = new Command({
@@ -17,6 +18,7 @@ const pressureCommand = new Command({
 			throw new ScriptError('Invalid pressure value', lineIndex);
 		}
 		ctx.pressMb = pressMb;
+		ctx.refMul = calcRefMultiplier(ctx.tempC, pressMb);
 	},
 });
 

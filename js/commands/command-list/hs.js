@@ -28,7 +28,7 @@ const hsCommand = new Command({
 		}
 
 		const ha = hs - ctx.indexErr - ctx.dip;
-		const ref = calcAltStdRefraction(ha);
+		const ref = calcAltStdRefraction(ha)*ctx.refMul;
 		const ho = ha - ref;
 		const rad = 90 - ho;
 

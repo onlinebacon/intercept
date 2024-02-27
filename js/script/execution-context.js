@@ -14,6 +14,7 @@ export class ExecutionContext {
 		this.lops = false ? [ new LoP() ] : [];
 		this.pressMb = 1010;
 		this.tempCelsius = 10;
+		this.refMul = 1;
 		this.labels = [];
 		this.results = false ? [[ 0, 0 ]] : null;
 		this.compare = false ? [ 0, 0 ] : null;

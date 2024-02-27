@@ -28,8 +28,7 @@ const znCommand = new Command({
 		}
 
 		const alt = 90 - (zn - ctx.indexErr);
-		const mul = ctx.pressMb/1010 * 283/(273 + ctx.tempCelsius);
-		const ref = calcAltStdRefraction(alt) * mul;
+		const ref = calcAltStdRefraction(alt) * ctx.refMul;
 		const rad = 90 - (alt - ref);
 
 		if (flagOn(CORRECTIONS)) {
