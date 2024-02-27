@@ -12,7 +12,7 @@ const lookup = (name) => {
 	return dataset.find(body => body.regex.test(name));
 };
 
-const setGP = (ctx, body, time, inputName) => {
+const setGP = (ctx, body, time) => {
 	const timestamp = `${ctx.date}T${time}${ctx.gmtOffset}`;
 	const unixTime = new Date(timestamp)/1000;
 	if (isNaN(unixTime)) {
@@ -38,7 +38,7 @@ const setGP = (ctx, body, time, inputName) => {
 	ctx.gp = gp;
 	if (flagOn(GP_CALC)) {
 		blankLine();
-		writeln(inputName, ' at ', time, ':');
+		writeln(body.name, ' at ', time, ':');
 		writeln('- SHA: ', ctx.deg(sha));
 		writeln('- Dec: ', ctx.deg(dec));
 		writeln('- GHA of Aries: ', ctx.deg(ariesGHA));
@@ -74,8 +74,8 @@ const bodyCommand = new Command({
 		if (!body) {
 			throw new ScriptError(`Couldn't find "${name}" in dataset`, lineIndex);
 		}
-		ctx.defLabel = `${name} at ${time}`;
-		setGP(ctx, body, time, name);
+		ctx.defLabel = `${body.name} at ${time}`;
+		setGP(ctx, body, time);
 	},
 });
 
