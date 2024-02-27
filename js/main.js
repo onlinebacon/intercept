@@ -1,5 +1,6 @@
 import './settings/settings.js';
-import { run } from './script/run.js';
+import { run, runRequest } from './script/run.js';
+import { AUTO_RUN, flagOn } from './flags/flags.js';
 
 const input = document.querySelector('.text textarea');
 
@@ -27,5 +28,10 @@ const initialScript = `
 `.trim().split('\n').map(line => line.trim()).join('\n');
 
 input.value = initialScript;
+input.addEventListener('input', () => {
+	if (flagOn(AUTO_RUN)) {
+		runRequest(input.value);
+	}
+});
 
 run(input.value);

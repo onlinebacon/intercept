@@ -6,7 +6,14 @@ import { ExecutionContext } from './execution-context.js';
 import * as stdout from '../stdout.js';
 import { LOP_ERRORS, LOP_RESIDUALS, RUNTIME, flagOn } from '../flags/flags.js';
 
+const REQ_DELAY = 750;
+
+let running = false;
+let runAgain = false;
+let runReq = null;
+
 export const run = async (script) => {
+	running = true;
 	stdout.clear();
 	const lines = script.split('\n');
 	const ctx = new ExecutionContext();
@@ -44,4 +51,23 @@ export const run = async (script) => {
 		stdout.blankLine();
 		stdout.writeln('Runtime: ', endTime - startTime, ' ms');
 	}
+	running = false;
+	if (runAgain !== false) {
+		runAgain = false;
+		run(runAgain);
+	}
+};
+
+export const runRequest = (script) => {
+	if (runReq !== null) {
+		clearTimeout(runReq);
+	}
+	runReq = setTimeout(() => {
+		runReq = null;
+		if (running) {
+			runAgain = script;
+		} else {
+			run(script);
+		}
+	}, REQ_DELAY);
 };

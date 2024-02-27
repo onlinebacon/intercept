@@ -3,6 +3,7 @@ export const LOP_ERRORS    = 'RES_ERRORS';
 export const CORRECTIONS   = 'CORRECTIONS';
 export const GP_CALC       = 'GP_CALC';
 export const RUNTIME       = 'RUNTIME';
+export const AUTO_RUN      = 'AUTO_RUN';
 
 const flags = {
 	[CORRECTIONS]: true,
@@ -10,6 +11,7 @@ const flags = {
 	[LOP_RESIDUALS]: false,
 	[LOP_ERRORS]: false,
 	[RUNTIME]: false,
+	[AUTO_RUN]: true,
 };
 
 export const flagOn = (flag) => {

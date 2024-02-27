@@ -1,20 +1,28 @@
-import { CORRECTIONS, GP_CALC, LOP_ERRORS, LOP_RESIDUALS, RUNTIME, flagOn, setFlag, storeFlags } from '../flags/flags.js';
+import {
+	AUTO_RUN,
+	CORRECTIONS,
+	GP_CALC,
+	LOP_ERRORS,
+	LOP_RESIDUALS,
+	RUNTIME,
+
+	flagOn,
+	setFlag,
+	storeFlags,
+} from '../flags/flags.js';
 
 const toggles = [{
-	label: 'Show corrections',
-	flag: CORRECTIONS,
-}, {
-	label: 'Show GP calculations',
-	flag: GP_CALC,
-}, {
-	label: 'Show LoP residuals',
-	flag: LOP_RESIDUALS,
-}, {
-	label: 'Show LoP errors',
-	flag: LOP_ERRORS,
-}, {
-	label: 'Show run time',
-	flag: RUNTIME,
+	flag: CORRECTIONS, label: 'Show corrections',
+},  {
+	flag: GP_CALC, label: 'Show GP calculations',
+},  {
+	flag: LOP_RESIDUALS, label: 'Show LoP residuals',
+},  {
+	flag: LOP_ERRORS, label: 'Show LoP errors',
+},  {
+	flag: RUNTIME, label: 'Show run time',
+},  {
+	flag: AUTO_RUN, label: 'Auto run',
 }];
 
 const bg = document.querySelector('.settings-background');
