@@ -11,12 +11,14 @@ export const runCommands = async (ctx = new ExecutionContext(), lines = [ '' ]) 
 		}
 		const command = commandList.find(command => command.regex.test(line));
 		if (!command) {
+			stdout.blankLine();
 			stdout.writeln('Error at line ', i + 1, ': invalid command line');
 			throw new ScriptError('Invalid command line', i);
 		}
 		try {
 			await command.run(ctx, line, i);
 		} catch(error) {
+			stdout.blankLine();
 			if (error instanceof ScriptError) {
 				stdout.writeln('Error at line ', i + 1, ': ', error.message);
 			} else {

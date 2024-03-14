@@ -2,7 +2,7 @@ import gpCommand from './command-list/gp.js';
 import radCommand from './command-list/rad.js';
 import temperatureCommand from './command-list/temperature.js';
 import pressureCommand from './command-list/pressure.js';
-import znCommand from './command-list/zn.js';
+import zenCommand from './command-list/zen.js';
 import hsCommand from './command-list/hs.js';
 import azCommand from './command-list/az.js';
 import formatCommand from './command-list/format.js';
@@ -25,7 +25,7 @@ export const commandList = [
 	gpCommand,
 	bodyCommand,
 	radCommand,
-	znCommand,
+	zenCommand,
 	hsCommand,
 	azCommand,
 	compareCommand,

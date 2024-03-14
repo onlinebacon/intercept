@@ -8,9 +8,9 @@ import { moveLabel } from '../utils.js';
 import { CORRECTIONS, flagOn } from '../../flags/flags.js';
 import { blankLine, writeln } from '../../stdout.js';
 
-const regex = /^\s*Zn:/i;
-const znCommand = new Command({
-	name: 'Zn',
+const regex = /^\s*Zen:/i;
+const zenCommand = new Command({
+	name: 'Zen',
 	description: `
 		Specifies a zenith angle reading. Corrections will applied so this angle reading can result in a radius of a new circle of position.
 	`,
@@ -22,18 +22,18 @@ const znCommand = new Command({
 	
 		line = moveLabel(ctx, line);
 
-		const zn = parseAngle(line.replace(regex, ''));
-		if (isNaN(zn)) {
+		const zen = parseAngle(line.replace(regex, ''));
+		if (isNaN(zen)) {
 			throw new ScriptError('Invalid zenith angle', lineIndex);
 		}
 
-		const alt = 90 - (zn - ctx.indexErr);
+		const alt = 90 - (zen - ctx.indexErr);
 		const ref = calcAltStdRefraction(alt) * ctx.refMul;
 		const rad = 90 - (alt - ref);
 
 		if (flagOn(CORRECTIONS)) {
 			blankLine();
-			writeln(`Zn of ${ctx.deg(zn)}:`);
+			writeln(`Zenith of ${ctx.deg(zen)}:`);
 			writeln('- Corrected for index: ', ctx.deg(90 - alt));
 			writeln('- Refraction: ', ctx.deg(ref));
 			writeln('- Zenith distance: ', ctx.deg(rad));
@@ -43,4 +43,4 @@ const znCommand = new Command({
 	},
 });
 
-export default znCommand;
+export default zenCommand;
