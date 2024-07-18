@@ -1,7 +1,6 @@
-const SD = 86164.09053820801;
-const NULL = 1656652979.900;
+const a = 0.004178074652294633;
+const b = 100.17744491179369;
 
 export const calcAriesGHA = (unixTime) => {
-	const angle = (unixTime - NULL) * 360 / SD;
-	return (angle % 360 + 360) % 360;
+    return (unixTime*a + b) % 360;
 };
